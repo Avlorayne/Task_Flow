@@ -1,21 +1,18 @@
-﻿using System.Collections.Concurrent;
-using System.Linq;
-using TMPro;
-using UnityEngine.UI;
+﻿using System.Linq;
 
 namespace TaskFlow
 {
     public interface IDetectionProperty {}
     public struct PropertyPath : IDetectionProperty
     {
-        public PropertyPath(Porter port, string name)
+        public PropertyPath(IPorter port, string name)
         {
             SourcePort = port;
             PropertyName = name;
         }
         
-        public Porter SourcePort;
-        public string PropertyName;
+        public readonly IPorter SourcePort;
+        public readonly string PropertyName;
     }
 
     public struct CustomProperty : IDetectionProperty
@@ -25,7 +22,7 @@ namespace TaskFlow
             Value = value;
         }
 
-        public string Value { get; }
+        public readonly string Value;
     }
 
     public abstract class AtomicDetection : Detection
@@ -34,7 +31,7 @@ namespace TaskFlow
         {
             return property switch
             {
-                PropertyPath propertyPath => Context.GetProperty(propertyPath, 0)?.Trim(),
+                PropertyPath propertyPath => Context.DequeueProperty(propertyPath)?.Trim(),
                 CustomProperty customProperty => customProperty.Value.Trim(),
                 _ => string.Empty
             };
@@ -46,6 +43,7 @@ namespace TaskFlow
         public IDetectionProperty Property0;
         public IDetectionProperty Property1;
         public bool NotEqual0_Equal1;
+        
         public override bool Result
         {
             get
@@ -68,6 +66,7 @@ namespace TaskFlow
         public float Tolerance;
         public bool LessThan0_GreaterThan1;
         public bool UseEqual;
+        
         public override bool Result
         {
             get
@@ -92,7 +91,8 @@ namespace TaskFlow
         public IDetectionProperty Property;
         public string[] Collection;
         public bool NotContain0_Contain1;
-
+        
+        
         public override bool Result
         {
             get

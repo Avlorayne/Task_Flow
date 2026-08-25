@@ -5,36 +5,25 @@ namespace TaskFlow
 {
     public abstract class CombinationDetection : Detection
     {
-        public ConcurrentBag<Detection> SubDetections;
+        /// 序列化注入
+        public ConcurrentBag<Detection> SubDetections = new ();
     }
 
+    /// 组合判定：与运算
     public class And : CombinationDetection
     {
-        public override bool Result
-        {
-            get
-            {
-                if (SubDetections.IsEmpty)
-                    return false;
-
-                return SubDetections.All(subDetection => subDetection.Result);
-            }
-        }
+        public override bool Result 
+            => !SubDetections.IsEmpty && SubDetections.All(subDetection => subDetection.Result);
     }
 
+    /// 组合判定：或运算
     public class Or : CombinationDetection
     {
-        public override bool Result
-        {
-            get {
-                if (SubDetections.IsEmpty)
-                    return false;
-
-                return SubDetections.Any(subDetection => subDetection.Result);
-            }
-        }
+        public override bool Result 
+            => !SubDetections.IsEmpty && SubDetections.Any(subDetection => subDetection.Result);
     }
-
+    
+    /// 组合判定：非运算
     public class Not : CombinationDetection
     {
         private Detection SubDetection => SubDetections.FirstOrDefault();

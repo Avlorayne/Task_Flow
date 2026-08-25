@@ -4,18 +4,34 @@ namespace TaskFlow
 {
     public class DetectionContext
     {
-        public Dictionary<Porter, List<Signal>> context;
+        private Dictionary<IPorter, Queue<Signal>> _context;
 
-        public string GetProperty(PropertyPath path, int index)
+        public Queue<Signal> this[IPorter source] => _context.GetValueOrDefault(source);
+
+        public string DequeueProperty(PropertyPath path)
         {
-            if (context.TryGetValue(path.SourcePort, out var list))
+            if (_context.TryGetValue(path.SourcePort, out var queue))
             {
-                var signal = list[index];
-                if (signal.PropertyHeader.TryGetValue(path.PropertyName, out var value))
-                    return value;
+                var signal = queue.Dequeue();
+                // if (signal.PropertyHeader.TryGetValue(path.PropertyName, out var value))
+                //     return value;
             }
 
             return null;
+        }
+
+        public void EnqueueSignal(IPorter source, Signal signal)
+        {
+            if (_context.TryGetValue(source, out var queue))
+            {
+                queue.Enqueue(signal);
+            }
+            else
+            {
+                var newList = new Queue<Signal>();
+                newList.Enqueue(signal);
+                _context.Add(source, newList);
+            }
         }
     }
 }
