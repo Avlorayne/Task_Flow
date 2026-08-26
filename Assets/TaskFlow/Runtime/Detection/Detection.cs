@@ -1,4 +1,4 @@
-﻿namespace TaskFlow
+﻿namespace TaskFlow.Detection
 {
     public abstract class Detection
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TaskFlow
+namespace TaskFlow.Detection
 {
     public class DetectionContext
     {

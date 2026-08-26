@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.LowLevel;
 
-namespace TaskFlow.TaskFlow.Manager
+namespace TaskFlow
 {
     public static class PlayerLoopSystemExtensions
     {

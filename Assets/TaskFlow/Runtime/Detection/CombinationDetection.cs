@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Linq;
 
-namespace TaskFlow
+namespace TaskFlow.Detection
 {
     public abstract class CombinationDetection : Detection
     {

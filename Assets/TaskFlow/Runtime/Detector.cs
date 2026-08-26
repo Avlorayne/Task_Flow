@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using TaskFlow.Detection;
 using UnityEngine;
 
 namespace TaskFlow
@@ -18,7 +17,7 @@ namespace TaskFlow
         /// 在判定时筛选
         private Queue<Signal> LocalContext { get; set; } = new();
         
-        public Detection RootDetection;
+        public Detection.Detection RootDetection;
 
         public bool Valid { get; private set; } = true;
         public bool SelfActive { get; private set; } = true;

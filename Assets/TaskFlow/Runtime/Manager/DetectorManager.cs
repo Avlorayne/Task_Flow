@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using TaskFlow.TaskFlow.Manager;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.LowLevel;
 using UnityEngine.PlayerLoop;
 
-namespace TaskFlow.Manager
+namespace TaskFlow
 {
     public class DetectorManager : MonoSingleton<DetectorManager>
     {
         private static HashSet<Detector> detectors = new();
+        public static UnityAction OnDetectEnd;
 
         protected override void Awake()
         {
@@ -31,6 +31,7 @@ namespace TaskFlow.Manager
                 if(detector.SelfActive && detector.Called)
                     detector.HeadDetect();
             }
+            OnDetectEnd?.Invoke();
         }
 
         [RuntimeInitializeOnLoadMethod]
@@ -46,6 +47,7 @@ namespace TaskFlow.Manager
             // Debug.Log($"=========================Original================================");
             // current.PrintEvents();
             // Debug.Log($"=========================Modified================================");
+            // 把这个分片加在 MonoBehaviour 脚本运行完 LateUpdate 之后
             current = current.InsertSystemAfter<PreLateUpdate.ScriptRunBehaviourLateUpdate>(detectUpdate);
             PlayerLoop.SetPlayerLoop(current);
             // current.PrintEvents();

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace TaskFlow
+namespace TaskFlow.Detection
 {
     public interface IDetectionProperty {}
     public struct PropertyPath : IDetectionProperty

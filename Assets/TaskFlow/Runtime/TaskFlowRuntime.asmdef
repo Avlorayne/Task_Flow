@@ -1,6 +1,6 @@
 {
     "name": "TaskFlow.Runtime",
-    "rootNamespace": "TaskFlow",
+    "rootNamespace": "",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
