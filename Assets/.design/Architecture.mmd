@@ -1,0 +1,57 @@
+---
+  config:
+    class:
+      hideEmptyMembersBox: true
+---
+classDiagram
+    direction TD
+
+    class Sender {
+        - postChannel : Channel
+        + Send(Signal signal) void
+    }
+
+    class Signal {
+        - ID : string
+        - timestamp : long
+        - Entity : object
+        - PostChannel : Channel
+        - Params : Dictionary~string, object~
+    }
+
+    class Channel {
+        - ChannelId : string
+        - ProtocolParams : Dictionary~string, object~
+        + ProtocolHashError() bool
+    }
+
+    class Detector {
+        - PrePorters : Porter[]
+        - SignalCache : 
+    }
+
+    class Porter {
+        <<abstract>>
+        - OnRaised : Action~Signal~
+        + Raise(Signal signal) void
+        + AddListener(Action~Signal~ listener) void
+        + RemoveListener(Action~Signal~ listener) void
+        
+    }
+
+    class Detection {
+        <<abstract>>
+        - Detect(Detection[] detections) bool
+    }
+
+    class Handler {
+        <<interface>>
+    }
+
+    Porter --|> Channel
+    Porter --|> Detector
+    Detector *--> Detection
+
+    Sender ..> Channel : 发送信号
+    Channel <.. Detector : 监听信号
+    Detector <.. Handler : 监听信号

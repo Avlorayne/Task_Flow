@@ -6,36 +6,32 @@ namespace TaskFlow
 {
     public class ChannelManager : MonoSingleton<ChannelManager>
     {
-        private HashSet<BaseChannel> channels = new();
-        public void AddChannel(BaseChannel channel)
+        private static HashSet<BaseChannel> channels = new();
+        public static void AddChannel(BaseChannel channel)
         {
-            channel.transform.SetParent(this.transform);
+            channel.transform.SetParent(Instance.transform);
             channels.Add(channel);
         }
 
-        public bool TryGetChannelSingleton<T>(out BaseChannel foundChannel) where T : Signal
+        public static bool TryGetChannelByTypeOfSignal<T>(out BaseChannel foundedChannel) where T : Signal
         {
-            foundChannel = null;
+            foundedChannel = null;
             foreach (var channel in channels)
-            {
                 if (channel is Channel<T> converted)
                 {
-                    foundChannel = converted;
+                    foundedChannel = converted;
                     return true;
                 }
-            }
+            
             return false;
         }
 
-        public Channel<T> GetChannelSingleton<T>() where T : Signal
+        public static Channel<T> GetChannelByTypeOfSignal<T>() where T : Signal
         {
             foreach (var channel in channels)
-            {
                 if (channel is Channel<T> converted)
-                {
                     return converted;
-                }
-            }
+            
             return null;
         }
     }

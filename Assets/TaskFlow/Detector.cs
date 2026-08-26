@@ -5,42 +5,35 @@ using UnityEngine;
 
 namespace TaskFlow
 {
-    public class Detector : MonoBehaviour, IPorter
+    
+    public class Detector : ScriptableObject, IPorter
     {
+        [Header("订阅关系")]
         [SerializeField] private List<Detector> Subscribers = new();
-
         [SerializeField] private IHandler Handler;
-
-        public bool SelfActive { get; private set; } = true;
         
         /// 公共静态上下文，只在第一层Detector使用。
         public static readonly DetectionContext StaticContext = new();
-        
         /// 本地上下文，第一层和往后都需要使用的，只筛选对自己有效的上下文信息。
         /// 在判定时筛选
-        public Queue<Signal> LocalContext { get; private set; } = new();
+        private Queue<Signal> LocalContext { get; set; } = new();
         
         public Detection RootDetection;
 
-        private Coroutine _waitCoroutine;
+        public bool Valid { get; private set; } = true;
+        public bool SelfActive { get; private set; } = true;
+        public bool Called { get; private set; } = false;
 
-        public void StartHeadDetect()
+        public void CallDetect() => Called = true;
+        
+        /// Called at the End of Frame
+        public void HeadDetect()
         {
-            // 添加显示判别，如果已经被call过了，就不再重复调用
-            if (_waitCoroutine != null) return;
-            
-            _waitCoroutine = StartCoroutine(HeadDetect());
-            return;
-
-            IEnumerator HeadDetect()
-            {
-                yield return new WaitForEndOfFrame();
-                Detect();
-                _waitCoroutine = null;
-            }
+            DetectImmediately();
+            Called = false;
         }
         
-        private void Detect()
+        private void DetectImmediately()
         {
             if (RootDetection is not { Result: true }) return;
             // 判定后发送给subscribers
@@ -51,7 +44,7 @@ namespace TaskFlow
                     // 注入上下文
                 
                     // 唤醒处理
-                    detector.Detect();
+                    detector.DetectImmediately();
                 }
             
             // 判定后发送给IHandler

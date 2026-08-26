@@ -9,11 +9,9 @@ using UnityEngine.SceneManagement;
 
 namespace TaskFlow
 {
-    public class BaseChannel : MonoBehaviour {}
+    public class BaseChannel : MonoBehaviour, IPorter {}
     
-    public class Channel<T> :
-        BaseChannel,
-        IPorter  where T : Signal
+    public class Channel<T> : BaseChannel where T : Signal
     {
         [SerializeField] private List<Detector> subscribers = new ();
         private readonly ConcurrentQueue<T> _eventQueue = new ();
@@ -26,7 +24,7 @@ namespace TaskFlow
             {
                 if (_instance != null) return _instance;
                 // 在Manager中查找
-                _instance ??= Manager.GetChannelSingleton<T>();
+                _instance ??= ChannelManager.GetChannelByTypeOfSignal<T>();
                 // 在场景中查找
                 _instance ??= FindObjectOfType<Channel<T>>();
                 // 如果还没找到，创建一个新的 GameObject
@@ -34,7 +32,7 @@ namespace TaskFlow
                 {
                     var go = new GameObject(typeof(Channel<T>).Name);
                     _instance = go.AddComponent<Channel<T>>();
-                    Manager.AddChannel(_instance);
+                    ChannelManager.AddChannel(_instance);
                 }
                 return _instance;
             }
@@ -43,7 +41,7 @@ namespace TaskFlow
 
         void Awake()
         {
-            if (_instance == null) Instance = this;
+            if (_instance == null) _instance = this;
         }
         
         void LateUpdate()
@@ -59,11 +57,13 @@ namespace TaskFlow
             if(currentEvents)
                 foreach (var subscriber in subscribers)
                     AssignSignal(subscriber);
+            
+            Debug.Log($"[Channel] Called Detectors, count: {subscribers.Count}");
         }
 
         public void AddDelegate(T signal) => _eventQueue.Enqueue(signal);
         
-        private void AssignSignal(Detector detector) => detector.StartHeadDetect();
+        private void AssignSignal(Detector detector) => detector.CallDetect();
 
 #if UNITY_EDITOR
         public void AddSubscriber(Detector subscriber) => subscribers.Add(subscriber);
