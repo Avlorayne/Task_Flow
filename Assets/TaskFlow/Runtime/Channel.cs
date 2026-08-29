@@ -1,69 +1,44 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using TaskFlow.Utility;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace TaskFlow
 {
-    public class BaseChannel : MonoBehaviour, IPorter {}
-    
+    [CreateAssetMenu(fileName = "new Channel", menuName = "TaskFlow/Channel")]
     public class Channel<T> : BaseChannel where T : Signal
     {
-        [SerializeField] private List<Detector> subscribers = new ();
-        private readonly ConcurrentQueue<T> _eventQueue = new ();
-
-        private static ChannelManager Manager => ChannelManager.Instance;
+        [SerializeField, InspectorReadOnly] public string signalType = typeof(T).Name.SplitCamelCase();
+        
         private static Channel<T> _instance;
         public static Channel<T> Instance
         {
             get
             {
-                if (_instance != null) return _instance;
-                // 在Manager中查找
                 _instance ??= ChannelManager.GetChannelByTypeOfSignal<T>();
-                // 在场景中查找
-                _instance ??= FindObjectOfType<Channel<T>>();
-                // 如果还没找到，创建一个新的 GameObject
-                if (_instance == null)
+                if(_instance == null)
                 {
-                    var go = new GameObject(typeof(Channel<T>).Name);
-                    _instance = go.AddComponent<Channel<T>>();
+                    _instance = Resources.Load<Channel<T>>(ResourcePath);
                     ChannelManager.AddChannel(_instance);
                 }
                 return _instance;
             }
             protected set => _instance = value;
         }
-
-        void Awake()
-        {
-            if (_instance == null) _instance = this;
-        }
         
-        void LateUpdate()
+        private readonly ConcurrentQueue<T> _eventQueue = new ();
+        
+        public override void LateUpdate()
         {
             bool currentEvents = _eventQueue.Any();
             // 清理公共上下文
-            var queue = Detector.StaticContext[this];
-            queue.Clear();
-            while(_eventQueue.TryDequeue(out var signal))
-                queue.Enqueue(signal);
-            
+            ChannelManager.RefreshSignalQueue(_eventQueue);
             // 唤醒每个判别器工作
-            if(currentEvents)
-                foreach (var subscriber in subscribers)
-                    AssignSignal(subscriber);
-            
-            Debug.Log($"[Channel] Called Detectors, count: {subscribers.Count}");
+            OnSignal?.Invoke();
         }
 
-        public void AddDelegate(T signal) => _eventQueue.Enqueue(signal);
-        
-        private void AssignSignal(Detector detector) => detector.CallDetect();
-
-#if UNITY_EDITOR
-        public void AddSubscriber(Detector subscriber) => subscribers.Add(subscriber);
-        public void RemoveSubscriber(Detector subscriber) => subscribers.Remove(subscriber);
-#endif
+        public void AddMessage(T signal) => _eventQueue.Enqueue(signal);
     }
 }

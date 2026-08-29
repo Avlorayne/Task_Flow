@@ -29,7 +29,7 @@ namespace TaskFlow
             foreach (var detector in detectors)
             {
                 if(detector.SelfActive && detector.Called)
-                    detector.HeadDetect();
+                    detector.Handle();
             }
             OnDetectEnd?.Invoke();
         }

@@ -1,0 +1,81 @@
+%% =====================================================================
+%% Detector 上下文注入过程 流程图
+%% 依据：Assets/TaskFlow/Runtime/{Detector.cs, Channel.cs, BaseChannel.cs,
+%%        Sender.cs, Manager/ChannelManager.cs, Manager/DetectorManager.cs,
+%%        Detection/Detection.cs, Detection/DetectionContext.cs,
+%%        Detection/AtomicDetection.cs}, Editor/SignalChannelGenerator.cs
+%% 重点：梳理“订阅(Subscribers) → 上下文注入”链路，标红处即“订阅体现过差”。
+%% =====================================================================
+flowchart TD
+    %% ---------------- 阶段0：初始化 / 装配 ----------------
+    subgraph P0["阶段0 初始化与装配（编辑器 + 运行时）"]
+        GEN["SignalChannelGenerator 扫描 Signal 子类<br/>自动生成封闭泛型 Channel 子类"]:::setup
+        REG["Channel&lt;T&gt;.Instance 懒加载并 AddChannel 注册<br/>Detector 在编辑器装配 [SerializeField] Subscribers / Handler"]:::setup
+        GEN --> REG
+    end
+
+    %% ---------------- 阶段1：业务发送 ----------------
+    subgraph P1["阶段1 业务发布 Signal"]
+        SND["Sender.Send&lt;T&gt;(signal)"]:::send
+        CM["ChannelManager.TryGetChannelByTypeOfSignal&lt;T&gt;"]:::send
+        Q["Channel&lt;T&gt;._eventQueue.Enqueue(signal)"]:::send
+        SND --> CM --> Q
+    end
+
+    %% ---------------- 阶段2：Channel 每帧刷新 ----------------
+    subgraph P2["阶段2 Channel.LateUpdate 每帧执行"]
+        CLU["Channel&lt;T&gt;.LateUpdate()<br/>（由 ChannelManager.LateUpdate 驱动）"]:::chan
+        FILL["queue = Detector.StaticContext[this]<br/>Clear 后写入本帧 Signal"]:::ctxwarn
+        WAK["若 currentEvents：遍历 subscribers<br/>AssignSignal(s) = s.CallDetect() 仅置 Called=true"]:::subwarn
+        CLU --> FILL --> WAK
+    end
+
+    %% ---------------- 阶段3：帧末调度 ----------------
+    subgraph P3["阶段3 DetectorManager 帧末调度（PlayerLoop）"]
+        DM["DetectorManager.DetectAll()<br/>插入 PreLateUpdate.ScriptRunBehaviourLateUpdate 之后"]:::man
+        HEAD["SelfActive && Called → detector.HeadDetect()"]:::man
+        ENDEV["OnDetectEnd?.Invoke()"]:::man
+        DM --> HEAD --> ENDEV
+    end
+
+    %% ---------------- 阶段4：判定 + 订阅上下文注入 ----------------
+    subgraph P4["阶段4 Detector.DetectImmediately 判定与'订阅'上下文注入"]
+        EVAL["if RootDetection is not {Result:true} return"]:::det
+        CTXNULL["RootDetection(Detection) 内 Context 字段从未赋值 → 读不到上下文"]:::prob
+        SUB["if Subscribers.Count > 0：遍历订阅者"]:::sub
+        INJ1["// 注入上下文 …… <br/>（空注释，无任何注入代码）"]:::bad
+        REC["detector.DetectImmediately() 递归唤醒订阅者"]:::sub
+        HAN["if Handler != null"]:::hand
+        INJ2["// 注入上下文 …… <br/>（空注释，无任何注入代码）"]:::bad
+        LOC["Handler.Handle(LocalContext)<br/>LocalContext 队列从未被写入 → 恒为空"]:::bad
+        EVAL --> SUB
+        SUB --> INJ1 --> REC
+        REC -.-> SUB
+        SUB --> HAN
+        HAN --> INJ2 --> LOC
+    end
+
+    %% ---------------- 关键跨阶段“订阅/上下文”连线 ----------------
+    REG -->|通道就绪| SND
+    Q -->|每帧排空| CLU
+    WAK -->|置 Called=true| DM
+    HEAD -->|HeadDetect| EVAL
+    FILL -.->|上下文应注入但从未接线| EVAL
+    REG -.->|订阅关系仅在编辑器装配，无运行时订阅| SUB
+
+    %% ---------------- 图例(纯文本说明) ----------------
+    LEGEND["图例：<br/>■红 = 订阅/上下文注入缺失(体现过差)<br/>■橙 = 上下文全局共享 / 只唤醒不注入<br/>■黄 = 订阅关系(仅编辑器装配, 无运行时订阅)"]:::legend
+
+    %% ---------------- 样式定义 ----------------
+    classDef setup fill:#e6f3ff,stroke:#3b82f6,color:#000
+    classDef send fill:#f1f5f9,stroke:#94a3b8,color:#000
+    classDef chan fill:#e6f3ff,stroke:#3b82f6,color:#000
+    classDef ctxwarn fill:#fff4e6,stroke:#f59e0b,color:#000
+    classDef subwarn fill:#fff4e6,stroke:#f59e0b,color:#000
+    classDef man fill:#eef2ff,stroke:#6366f1,color:#000
+    classDef det fill:#e6f3ff,stroke:#3b82f6,color:#000
+    classDef sub fill:#fffbe6,stroke:#eab308,color:#000
+    classDef hand fill:#fffbe6,stroke:#eab308,color:#000
+    classDef bad fill:#fee2e2,stroke:#dc2626,color:#000,stroke-width:2px
+    classDef prob fill:#fef2f2,stroke:#dc2626,color:#000,stroke-width:2px,stroke-dasharray:4
+    classDef legend fill:#f8fafc,stroke:#cbd5e1,color:#334155

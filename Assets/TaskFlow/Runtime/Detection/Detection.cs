@@ -2,8 +2,8 @@
 {
     public abstract class Detection
     {
-        public abstract bool Result { get; }
-        
-        protected DetectionContext Context;
+        public abstract bool Result();
+
+        protected SignalContext Context;
     }
 }

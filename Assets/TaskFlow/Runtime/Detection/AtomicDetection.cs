@@ -31,7 +31,7 @@ namespace TaskFlow.Detection
         {
             return property switch
             {
-                PropertyPath propertyPath => Context.DequeueProperty(propertyPath)?.Trim(),
+                PropertyPath propertyPath => default,
                 CustomProperty customProperty => customProperty.Value.Trim(),
                 _ => string.Empty
             };
@@ -43,19 +43,16 @@ namespace TaskFlow.Detection
         public IDetectionProperty Property0;
         public IDetectionProperty Property1;
         public bool NotEqual0_Equal1;
-        
-        public override bool Result
-        {
-            get
-            {
-                var value0 = RoutePropertyValue(Property0);
-                var value1 = RoutePropertyValue(Property1);
 
-                if (NotEqual0_Equal1)
-                    return value0 == value1;
-                else
-                    return value0 != value1;
-            }
+        public override bool Result()
+        {
+            var value0 = RoutePropertyValue(Property0);
+            var value1 = RoutePropertyValue(Property1);
+
+            if (NotEqual0_Equal1)
+                return value0 == value1;
+            else
+                return value0 != value1;
         }
     }
 
@@ -66,23 +63,20 @@ namespace TaskFlow.Detection
         public float Tolerance;
         public bool LessThan0_GreaterThan1;
         public bool UseEqual;
-        
-        public override bool Result
+
+        public override bool Result()
         {
-            get
+            var numberString0 = RoutePropertyValue(Property0);
+            var numberString1 = RoutePropertyValue(Property1);
+            var value0 = float.Parse(numberString0);
+            var value1 = float.Parse(numberString1);
+            return (LessThan0_GreaterThan1, UseEqual) switch
             {
-                var numberString0 = RoutePropertyValue(Property0);
-                var numberString1 = RoutePropertyValue(Property1);
-                var value0 = float.Parse(numberString0);
-                var value1 = float.Parse(numberString1);
-                return (LessThan0_GreaterThan1, UseEqual) switch
-                {
-                    (true, true) => value0 >= value1 + Tolerance,
-                    (true, false) => value0 > value1 + Tolerance,
-                    (false, true) => value0 <= value1 + Tolerance,
-                    (false, false) => value0 < value1 + Tolerance
-                };
-            }
+                (true, true) => value0 >= value1 + Tolerance,
+                (true, false) => value0 > value1 + Tolerance,
+                (false, true) => value0 <= value1 + Tolerance,
+                (false, false) => value0 < value1 + Tolerance
+            };
         }
     }
 
@@ -91,18 +85,15 @@ namespace TaskFlow.Detection
         public IDetectionProperty Property;
         public string[] Collection;
         public bool NotContain0_Contain1;
-        
-        
-        public override bool Result
+
+
+        public override bool Result()
         {
-            get
-            {
-                var value =  RoutePropertyValue(Property);
-                if(NotContain0_Contain1)
-                    return Collection.Contains(value);
-                else
-                    return !Collection.Contains(value);
-            }
+            var value = RoutePropertyValue(Property);
+            if (NotContain0_Contain1)
+                return Collection.Contains(value);
+            else
+                return !Collection.Contains(value);
         }
     }
 }
