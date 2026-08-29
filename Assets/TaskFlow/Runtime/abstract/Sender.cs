@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace TaskFlow
 {
-    public abstract class Sender
+    public static class Sender
     {
-        public void Send<T>(T signal) where T : Signal
+        public static void Send<T>(T signal) where T : Signal
         {
             if (ChannelManager.TryGetChannelByTypeOfSignal<T>(out var channel))
             {

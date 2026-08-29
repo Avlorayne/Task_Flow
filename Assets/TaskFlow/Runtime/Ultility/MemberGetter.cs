@@ -20,6 +20,27 @@ namespace TaskFlow.Utility
         // 委托：(FieldInfo, T的类型) -> 编译好的委托；值为 null 表示"已知类型不兼容"
         private readonly ConcurrentDictionary<(FieldInfo, Type), Delegate> _getters = new();
         
+        /// 弱类型取值。无法确定字段类型时使用，值类型字段会装箱一次。
+        public bool TryGetValue(object target, string name, out object value)
+        {
+            return TryGetValue<object>(target, name, out value);
+        }
+        
+        /// 直取弱类型值。字段不存在或不可读时返回 null。
+        public object GetValue(object target, string name)
+        {
+            // null 目标直接短路，避免 NRE 蔓延
+            if (target == null) return null;
+
+            var info = FindInfo(target.GetType(), name);
+            if (info == null) return null; // 字段不存在（错误已由 FindInfo 报过一次）
+
+            var getter = GetOrCreateGetter<object>(info);
+            if (getter == null) return null; // 类型不兼容（错误已由 TryCompileGetter 报过一次）
+
+            return getter(target);
+        }
+        
         /// 强类型取值。零装箱（字段类型与 T 一致时），线程安全。
         public bool TryGetValue<T>(object target, string name, out T value)
         {

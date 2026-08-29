@@ -16,10 +16,10 @@ namespace TaskFlow
     {
         private static readonly MemberGetter Getter = new();
         
-        public static bool TryGetField<T>(this Signal signal, string fieldName, out T value)
+        public static bool TryGetField(this Signal signal, string fieldName, out object value)
             => Getter.TryGetValue(signal, fieldName, out value);
         
-        public static T GetField<T>(this Signal signal, string fieldName)
-            => Getter.TryGetValue<T>(signal, fieldName, out var v) ? v : default;
+        public static object GetField(this Signal signal, string fieldName)
+            => Getter.GetValue(signal, fieldName);
     }
 }

@@ -104,9 +104,7 @@ namespace TaskFlow
         public static void RefreshSignalQueue<T>(ConcurrentQueue<T> newQueue) where T : Signal
         {
             var porter = GetChannelByTypeOfSignal<T>();
-            ChannelContext.ClearQueue(porter);
-            while (newQueue.TryDequeue(out var signal))
-                ChannelContext.EnqueueSignal(porter, signal);
+            ChannelContext.SetQueue(porter, newQueue);
         }
     }
 }

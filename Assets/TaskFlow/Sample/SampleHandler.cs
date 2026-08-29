@@ -6,7 +6,7 @@ namespace TaskFlow.Sample
     public class SampleHandler : MonoBehaviour, IHandler
     {
         public bool SelfActive { get; }
-        public void Inject(SignalContext context)
+        public void Inject(DetectionContext context)
         {
             throw new System.NotImplementedException();
         }

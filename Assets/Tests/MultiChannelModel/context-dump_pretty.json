@@ -1,0 +1,146 @@
+{
+    "Full context 1": {
+        "channels": {
+            "ChannelA": [
+                {
+                    "type": "ModelSignalA",
+                    "Text": "PlayMode-A",
+                    "Id": "bee5bc7cb4274bbf8cb3448694e98a46",
+                    "TimeStamp": 2.56946588
+                }
+            ],
+            "ChannelB": [
+                {
+                    "type": "ModelSignalB",
+                    "Value": 42,
+                    "Id": "930dc063fc6a4107b4884316bf40fbe8",
+                    "TimeStamp": 2.569739
+                }
+            ],
+            "ChannelC": [
+                {
+                    "type": "ModelSignalC",
+                    "Enabled": true,
+                    "Id": "d7ae253649784d3080eb952b16daf715",
+                    "TimeStamp": 2.56975269
+                }
+            ],
+            "ChannelX": [
+                {
+                    "type": "ModelSignalA",
+                    "Text": "PlayMode-X",
+                    "Id": "0452e7bef3974bb1b4906fc09db674ef",
+                    "TimeStamp": 2.5697546
+                }
+            ]
+        }
+    },
+    "Full context 2": {
+        "channels": {
+            "ChannelA": [
+                {
+                    "type": "ModelSignalA",
+                    "Text": "PlayMode-A",
+                    "Id": "186b7a9e6a1d45bcb6716fe1addd5c56",
+                    "TimeStamp": 6.99469233
+                }
+            ],
+            "ChannelB": [
+                {
+                    "type": "ModelSignalB",
+                    "Value": 42,
+                    "Id": "1125453502334b9b8b2686e867074ef0",
+                    "TimeStamp": 6.99469662
+                }
+            ],
+            "ChannelC": [
+                {
+                    "type": "ModelSignalC",
+                    "Enabled": true,
+                    "Id": "1214032f0a51465ab8c55e0ebfb00c70",
+                    "TimeStamp": 6.994698
+                }
+            ],
+            "ChannelX": [
+                {
+                    "type": "ModelSignalA",
+                    "Text": "PlayMode-X",
+                    "Id": "810dd3bdbe5e48a4afde747a19ba7551",
+                    "TimeStamp": 6.994699
+                }
+            ]
+        }
+    },
+    "Full context 3": {
+        "channels": {
+            "ChannelA": [
+                {
+                    "type": "ModelSignalA",
+                    "Text": "PlayMode-A",
+                    "Id": "7b37ae13043b41429dcb7c96da8f48bc",
+                    "TimeStamp": 8.994799
+                }
+            ],
+            "ChannelB": [
+                {
+                    "type": "ModelSignalB",
+                    "Value": 42,
+                    "Id": "dbe6998876274761a4315d3827b0f2b4",
+                    "TimeStamp": 8.994802
+                }
+            ],
+            "ChannelC": [
+                {
+                    "type": "ModelSignalC",
+                    "Enabled": true,
+                    "Id": "5aafddb2d4044577b191c7a6f8b9d816",
+                    "TimeStamp": 8.994804
+                }
+            ],
+            "ChannelX": [
+                {
+                    "type": "ModelSignalA",
+                    "Text": "PlayMode-X",
+                    "Id": "92b96119ad494d92b9cd0c2728ddef30",
+                    "TimeStamp": 8.994806
+                }
+            ]
+        }
+    },
+    "Full context 4": {
+        "channels": {
+            "ChannelA": [
+                {
+                    "type": "ModelSignalA",
+                    "Text": "PlayMode-A",
+                    "Id": "1b5686798a3949c0a6b1c990e2d70a13",
+                    "TimeStamp": 10.9955006
+                }
+            ],
+            "ChannelB": [
+                {
+                    "type": "ModelSignalB",
+                    "Value": 42,
+                    "Id": "f7eba3291c034ffebdd405f92c5475a2",
+                    "TimeStamp": 10.9955053
+                }
+            ],
+            "ChannelC": [
+                {
+                    "type": "ModelSignalC",
+                    "Enabled": true,
+                    "Id": "5495be5e96f644e48ed7a8c7ab32cd7f",
+                    "TimeStamp": 10.9955072
+                }
+            ],
+            "ChannelX": [
+                {
+                    "type": "ModelSignalA",
+                    "Text": "PlayMode-X",
+                    "Id": "77f6402d149644f680328f505aaf1996",
+                    "TimeStamp": 10.9955082
+                }
+            ]
+        }
+    }
+}

@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using TaskFlow.Utility;
@@ -40,5 +41,18 @@ namespace TaskFlow
         }
 
         public void AddMessage(T signal) => _eventQueue.Enqueue(signal);
+        
+        public override int GetHashCode()
+        {
+            return typeof(Channel<T>).GetHashCode();
+            // 或者：return typeof(T).GetHashCode();
+        }
+        
+        public override bool Equals(object obj)
+        {
+            // 只有相同封闭泛型类型才算相等
+            return obj is Channel<T>;
+            // 严格一点可写成：return obj != null && obj.GetType() == GetType();
+        }
     }
 }

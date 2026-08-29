@@ -9,27 +9,30 @@ namespace TaskFlow
 {
     public class DetectorManager : MonoSingleton<DetectorManager>
     {
-        private static HashSet<Detector> detectors = new();
+        private static HashSet<HeadDetector> detectors = new();
         public static UnityAction OnDetectEnd;
 
         protected override void Awake()
         {
             base.Awake();
-            detectors =  new HashSet<Detector>(Resources.FindObjectsOfTypeAll<Detector>().Where(d => d.Valid));
+            detectors =  new HashSet<HeadDetector>(Resources.FindObjectsOfTypeAll<HeadDetector>().Where(d => d.Valid));
         }
 
-        public static void AddDetector(Detector detector)
+        public static void AddDetector(HeadDetector detector)
         {
             detectors.Add(detector);
         }
 
         private static void DetectAll()
         {
-            Debug.Log($"Starting detector loop, count: {detectors.Count}");
+            // Debug.Log($"Starting detector loop, count: {detectors.Count}");
             foreach (var detector in detectors)
             {
                 if(detector.SelfActive && detector.Called)
+                {
+                    detector.Inject(ChannelManager.ChannelContext);
                     detector.Handle();
+                }
             }
             OnDetectEnd?.Invoke();
         }
