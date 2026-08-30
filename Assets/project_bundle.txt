@@ -1,0 +1,2508 @@
+══════════════════════════════════════════════════════════════════════
+ 项目代码合集 · proj2txt 生成
+──────────────────────────────────────────────────────────────────────
+ 生成时间 : 2026-08-31 01:05
+ 项目名称 : Assets
+ 文件数量 : 39 个
+ 代码行数 : 2,177 行
+ 代码体积 : 77.2 KB
+ Token预估: 约 26,864（粗略估算，实际以平台为准）
+══════════════════════════════════════════════════════════════════════
+
+══════════════════════════════════════════════════════════════════════
+ 给 AI 的阅读说明
+──────────────────────────────────────────────────────────────────────
+本文件是「Assets」项目的源码拼接合集，由 proj2txt 工具生成。请按以下约定阅读：
+ 1. 「目录结构」＝项目整体布局；「文件索引」＝各文件的路径 / 语言 / 行数，
+    以及其正文在本合集中的起始行号（Start 列，可用于快速定位）。
+ 2. 每个文件的正文被如下两行标记包裹，其中的路径均相对项目根目录：
+        ===== FILE START: <相对路径> =====
+        ===== FILE END: <相对路径> =====
+ 3. 个别文件若被截断，其正文末尾会有一行「……该文件共 N 行……」的提示。
+ 4. 引用代码时请使用「相对路径:行号」格式（例如 src/main.py:42）；
+    若正文行首带有「 行号 | 」前缀，请以该前缀中的数字为文件内行号。
+ 5. 若我没有在「我的需求」中给出具体任务，请先简要总结项目结构与所用技术栈。
+══════════════════════════════════════════════════════════════════════
+
+══════════════════════════════════════════════════════════════════════
+ 目录结构
+──────────────────────────────────────────────────────────────────────
+Assets/
+├── design/
+│   └── Task-Plan.md
+├── README/
+│   └── README.md
+└── TaskFlow/
+    ├── Editor/
+    │   ├── ReadOnlyDrawer.cs
+    │   └── SignalChannelGenerator.cs
+    ├── Generated/
+    │   └── SampleSignalChannel.cs
+    ├── Runtime/
+    │   ├── abstract/
+    │   │   ├── BaseChannel.cs
+    │   │   ├── Detector.cs
+    │   │   ├── Sender.cs
+    │   │   └── Signal.cs
+    │   ├── Attributes/
+    │   │   └── InspectorReadOnlyAttribute.cs
+    │   ├── Context/
+    │   │   ├── DetectionContext.cs
+    │   │   ├── DetectionContextPath.cs
+    │   │   ├── SignalContext.cs
+    │   │   └── SignalContextPath.cs
+    │   ├── Detection/
+    │   │   ├── AtomicDetection.cs
+    │   │   ├── BinaryFieldDetection.cs
+    │   │   ├── CollectionDetection.cs
+    │   │   ├── CombinationDetection.cs
+    │   │   ├── CompareDetection.cs
+    │   │   └── Detection.cs
+    │   ├── extends/
+    │   │   ├── BodyDetector.cs
+    │   │   ├── Channel.cs
+    │   │   └── HeadDetector.cs
+    │   ├── interfaces/
+    │   │   ├── IContext.cs
+    │   │   ├── IContextPath.cs
+    │   │   ├── IContextReader.cs
+    │   │   ├── IDetectionField.cs
+    │   │   ├── IHandler.cs
+    │   │   ├── IPorter.cs
+    │   │   └── IReceiver.cs
+    │   ├── Manager/
+    │   │   ├── ChannelManager.cs
+    │   │   ├── DetectorManager.cs
+    │   │   ├── MonoSingleton.cs
+    │   │   └── PlayerLoopSystemExtensions.cs
+    │   └── Utility/
+    │       ├── MemberGetter.cs
+    │       └── StringCamelReGexSplit.cs
+    └── Sample/
+        ├── SampleHandler.cs
+        ├── SampleSender.cs
+        └── SampleSignal.cs
+══════════════════════════════════════════════════════════════════════
+
+══════════════════════════════════════════════════════════════════════
+ 文件索引（Start = 正文在合集中的起始行号）
+──────────────────────────────────────────────────────────────────────
+  No. Path                                                       Language       Lines   Start
+   1. README/README.md                                           Markdown         302     135
+   2. design/Task-Plan.md                                        Markdown         142     442
+   3. TaskFlow/Editor/ReadOnlyDrawer.cs                          C#                26     589
+   4. TaskFlow/Editor/SignalChannelGenerator.cs                  C#               180     620
+   5. TaskFlow/Generated/SampleSignalChannel.cs                  C#                19     805
+   6. TaskFlow/Runtime/abstract/BaseChannel.cs                   C#                18     829
+   7. TaskFlow/Runtime/abstract/Detector.cs                      C#                57     852
+   8. TaskFlow/Runtime/abstract/Sender.cs                        C#                17     914
+   9. TaskFlow/Runtime/abstract/Signal.cs                        C#                25     936
+  10. TaskFlow/Runtime/Attributes/InspectorReadOnlyAttribute.cs  C#                 4     966
+  11. TaskFlow/Runtime/Context/DetectionContext.cs               C#                88     975
+  12. TaskFlow/Runtime/Context/DetectionContextPath.cs           C#                65    1068
+  13. TaskFlow/Runtime/Context/SignalContext.cs                  C#                84    1138
+  14. TaskFlow/Runtime/Context/SignalContextPath.cs              C#                30    1227
+  15. TaskFlow/Runtime/Detection/AtomicDetection.cs              C#                80    1262
+  16. TaskFlow/Runtime/Detection/BinaryFieldDetection.cs         C#                48    1347
+  17. TaskFlow/Runtime/Detection/CollectionDetection.cs          C#                46    1400
+  18. TaskFlow/Runtime/Detection/CombinationDetection.cs         C#                39    1451
+  19. TaskFlow/Runtime/Detection/CompareDetection.cs             C#                41    1495
+  20. TaskFlow/Runtime/Detection/Detection.cs                    C#                16    1541
+  21. TaskFlow/Runtime/extends/BodyDetector.cs                   C#                40    1562
+  22. TaskFlow/Runtime/extends/Channel.cs                        C#                47    1607
+  23. TaskFlow/Runtime/extends/HeadDetector.cs                   C#                45    1659
+  24. TaskFlow/Runtime/interfaces/IContext.cs                    C#                27    1709
+  25. TaskFlow/Runtime/interfaces/IContextPath.cs                C#                19    1741
+  26. TaskFlow/Runtime/interfaces/IContextReader.cs              C#                12    1765
+  27. TaskFlow/Runtime/interfaces/IDetectionField.cs             C#                68    1782
+  28. TaskFlow/Runtime/interfaces/IHandler.cs                    C#                 4    1855
+  29. TaskFlow/Runtime/interfaces/IPorter.cs                     C#                13    1864
+  30. TaskFlow/Runtime/interfaces/IReceiver.cs                   C#                15    1882
+  31. TaskFlow/Runtime/Manager/ChannelManager.cs                 C#               110    1902
+  32. TaskFlow/Runtime/Manager/DetectorManager.cs                C#                60    2017
+  33. TaskFlow/Runtime/Manager/MonoSingleton.cs                  C#                43    2082
+  34. TaskFlow/Runtime/Manager/PlayerLoopSystemExtensions.cs     C#               162    2130
+  35. TaskFlow/Runtime/Utility/MemberGetter.cs                   C#               122    2297
+  36. TaskFlow/Runtime/Utility/StringCamelReGexSplit.cs          C#                14    2424
+  37. TaskFlow/Sample/SampleHandler.cs                           C#                30    2443
+  38. TaskFlow/Sample/SampleSender.cs                            C#                13    2478
+  39. TaskFlow/Sample/SampleSignal.cs                            C#                 6    2496
+══════════════════════════════════════════════════════════════════════
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 1/39 · README/README.md · Markdown · 302 行
+===== FILE START: README/README.md =====
+# TaskFlow · 信号驱动的轻量任务系统
+
+> 关键词：Signal 触发 → Detection 判定 → Handler 处理 · ScriptableObject 通道 · 观察者解耦 · PlayerLoop 调度 · 组合模式判定
+
+## 1. 系统定位
+
+TaskFlow 是一个 Unity 游戏内任务系统，以 **「信号触发 → 判定 → 处理」** 为核心链条工作。
+
+**适用**：短任务、子任务、成就系统等聚焦于"某个事件的发生与判断及处理"的场景。
+
+**不适用**：大型主线任务系统（任务状态机、任务链/前置依赖、存档回滚等不在本系统职责内）。
+
+**当前状态**：PlayMode Runtime 核心链已完成；Editor 配置与依赖注入（订阅编辑、判定树编辑、序列化注入）**开发中**。
+
+## 2. 核心概念
+
+| 概念 | 载体 | 职责 |
+|---|---|---|
+| **Signal** | 普通 C# 类（POCO） | 一次业务事件的数据包（如 `EnemyDeadSignal { int EnemyId }`），带时间戳 |
+| **Channel\<T\>** | ScriptableObject | 同类信号的**通道**：缓存信号队列，每帧把队列快照注入全局 SignalContext，并广播唤醒事件 |
+| **Sender** | 静态类 | 业务侧唯一入口：`Sender.Send(new XxxSignal())`，按信号类型路由到对应 Channel |
+| **Detector** | ScriptableObject | 判定节点，持有判定树 `RootDetection`。分两层：**HeadDetector**（被 PlayerLoop 驱动，消费 SignalContext）与 **BodyDetector**（被上游级联驱动，消费 DetectionContext） |
+| **Detection** | 可序列化类 | 判定树节点。**AtomicDetection**（Equal / Compare / Contain）与 **CombinationDetection**（And / Or / Not）组合成任意复杂判定 |
+| **SignalContext** | 运行时对象 | 全局「通道 → 本帧信号队列」快照，HeadDetector 按订阅裁剪读取 |
+| **DetectionContext** | 运行时对象 | 「判定路径 → 信号」的结果上下文，沿 Head → Body → Handler 逐级传递 |
+| **IReceiver / IHandler** | 接口 | 下游节点契约：`Inject(上下文)` + `Handle()` |
+| **ChannelManager / DetectorManager** | MonoSingleton | 分别驱动 Channel 刷新与 HeadDetector 批量判定 |
+
+## 3. 架构总览
+
+```mermaid
+classDiagram
+  class Signal {
+    <<abstract>>
+    +float TimeStamp
+  }
+  class Sender {
+    <<static>>
+    +Send~T~(T signal)$
+  }
+  class BaseChannel {
+    <<abstract>>
+    +UnityAction OnSignal
+    +LateUpdate()*
+  }
+  class Channel~T~ {
+    -ConcurrentQueue~T~ _eventQueue
+    +AddMessage(T signal)
+  }
+  class IPorter {
+    <<interface>>
+    +UnityAction OnSignal
+  }
+  class IReceiver {
+    <<interface>>
+    +Inject(DetectionContext)
+    +Handle()
+  }
+  class Detector {
+    <<abstract>>
+    +Detection RootDetection
+    +bool Called
+    +bool SelfActive
+  }
+  class HeadDetector {
+    +Inject(SignalContext)
+  }
+  class BodyDetector
+  class Detection {
+    <<abstract>>
+    +Result(context)*
+    +GetContext()*
+  }
+  class AtomicDetection
+  class CombinationDetection
+  class Equal
+  class Compare
+  class Contains
+  class And
+  class Or
+  class Not
+  class SignalContext
+  class DetectionContext
+  class ChannelManager
+  class DetectorManager
+
+  BaseChannel <|-- Channel~T~
+  BaseChannel ..|> IPorter
+  Detector ..|> IPorter
+  Detector ..|> IReceiver 
+  Detector <|-- HeadDetector
+  Detector <|-- BodyDetector
+  Detection <|-- AtomicDetection
+  Detection <|-- CombinationDetection
+  AtomicDetection <|-- Equal
+  AtomicDetection <|-- Compare
+  AtomicDetection <|-- Contains
+  CombinationDetection <|-- And
+  CombinationDetection <|-- Or
+  CombinationDetection <|-- Not
+  Detector o-- Detection : RootDetection 判定树
+  Detector o-- IPorter : _porters 订阅
+  Detector o-- IReceiver : _receivers 派发
+  ChannelManager o-- BaseChannel : 驱动
+  DetectorManager o-- HeadDetector : 驱动
+  HeadDetector ..> SignalContext : 读本帧信号
+  BodyDetector ..> DetectionContext : 读上游结果
+  note for Detector "porters / receivers 均为 Detector 自身类型<br/>订阅其他 IPorter、派发给其他 IReceiver<br/>构成 Head → Body → Handler 级联"
+````
+## 4. 一帧之内的数据流
+
+```mermaid
+flowchart LR
+  A["业务代码<br/>Sender.Send(signal)"] --> B["Channel~T~ 信号队列<br/>(仅入队, 不处理)"]
+  B --> C["ChannelManager.LateUpdate<br/>队列快照 → SignalContext"]
+  C --> D["Channel.OnSignal 广播<br/>置位 HeadDetector.Called"]
+  D --> E["DetectorManager.DetectAll<br/>(PlayerLoop: LateUpdate 之后)"]
+  E --> F["HeadDetector<br/>RootDetection 判定 SignalContext"]
+  F -->|成功| G["GetContext() DFS 重组<br/>构建 DetectionContext"]
+  G --> H["BodyDetector 级联判定<br/>(Inject + Handle 同步递归)"]
+  H --> I["IHandler / 业务处理<br/>任务达成 / 成就弹出"]
+
+```
+
+一帧内的精确时序：
+
+```mermaid
+sequenceDiagram
+participant Biz as 业务代码
+participant Ch as Channel~T~
+participant CM as ChannelManager
+participant SC as SignalContext 全局
+participant DM as DetectorManager
+participant HD as HeadDetector
+participant BD as BodyDetector
+participant H as Handler
+
+Biz->>Ch: Sender.Send(signal) 入队
+Note over Ch: 帧内任意时刻, 只入队不处理
+Note over CM: PreLateUpdate.ScriptRunBehaviourLateUpdate
+CM->>Ch: LateUpdate()
+Ch->>SC: RefreshSignalQueue 本帧快照
+Ch-->>HD: OnSignal 置 Called
+Note over DM: PlayerLoop 插入点 DetectUpdate
+DM->>HD: Inject(SignalContext 按订阅裁剪)
+DM->>HD: Handle()
+HD->>HD: RootDetection.Result 判定
+HD->>SC: GetContext DFS 收集命中信号
+HD->>BD: Inject(DetectionContext) + Handle
+BD->>BD: RootDetection.Result 判定
+BD->>H: Inject + Handle
+H-->>Biz: 任务达成回调
+```
+
+> **为什么插在 `PreLateUpdate.ScriptRunBehaviourLateUpdate` 之后？** 保证所有 MonoBehaviour 的 `LateUpdate`（含 ChannelManager 的队列快照）先执行完，判定读到的信号一定是"本帧完整快照"，不会出现半帧数据。
+
+## 5. 快速上手
+
+### 第 1 步：定义信号（程序）
+
+```csharp
+using TaskFlow;
+
+public class EnemyDeadSignal : Signal
+{
+    public int EnemyId;
+}
+```
+
+### 第 2 步：生成通道（Editor 自动）
+
+菜单 `TaskFlow > Generate Signal Channels`（编译重载后自动执行），为每个 Signal 子类生成封闭泛型通道：
+
+```csharp
+// Assets/TaskFlow/Generated/EnemyDeadSignalChannel.cs（自动生成）
+public sealed class EnemyDeadSignalChannel : Channel<EnemyDeadSignal> { }
+```
+
+### 第 3 步：创建通道资产（Editor）
+
+`Create > TaskFlow/Channel/Enemy Dead Signal Channel`。
+**约定：资产必须位于任意 `Resources/TaskFlow/Channel/` 目录下**（`ChannelManager` 启动时按此路径加载）。
+
+### 第 4 步：发送信号（程序，任意位置任意时机）
+
+```csharp
+    Sender.Send(new EnemyDeadSignal { EnemyId = 1001 });
+```
+
+### 第 5 步：配置判定（Editor，部分依赖待完成的注入工具）
+
+1. 创建 `Create > TaskFlow/Head Detector`，在订阅列表中加入第 3 步的 Channel；
+2. 配置 `RootDetection` 判定树（如 `And( Contains(信号字段, 集合), Compare(数值) )`）；
+3. 需要级联时创建 `Body Detector`，挂到 HeadDetector 的 receivers；
+4. 终端业务实现 `IHandler`（MonoBehaviour 或自定义节点），在 `Handle()` 中收到 `DetectionContext` 完成处理。
+
+> ⚠️ 订阅列表编辑、判定树可视化编辑、序列化注入属 Editor 待开发部分，见 §8。
+
+## 6. 重点实现
+
+### 6.1 PlayerLoop 注入
+
+`DetectorManager` 通过 `PlayerLoop` 低层 API 把 `DetectAll` 插入 `PreLateUpdate.ScriptRunBehaviourLateUpdate` 之后，独立于任何 MonoBehaviour 生命周期：
+
+```csharp
+[RuntimeInitializeOnLoadMethod]
+private static void InitDetectorLoop()
+{
+    var detectUpdate = new PlayerLoopSystem {
+        type = typeof(DetectUpdate),
+        updateDelegate = DetectAll
+    };
+    var current = PlayerLoop.GetCurrentPlayerLoop();
+    current = current.InsertSystemAfter<PreLateUpdate.ScriptRunBehaviourLateUpdate>(detectUpdate);
+    PlayerLoop.SetPlayerLoop(current);
+}
+```
+
+收益：判定的触发**不依赖场景中存在任何组件**，且与 Unity 帧循环严格同步；`InsertSystemAfter` 采用"复制数组再替换"的递归实现，避免 struct `PlayerLoopSystem` 的值拷贝副作用。
+
+### 6.2 泛型 Channel 的编译期代码生成
+
+`Channel<T>` 是泛型类，无法作为资产挂载。`SignalChannelGenerator` 在**编译重载后自动**扫描全部 Signal 子类，生成封闭泛型子类文件：
+
+- 用 `TypeCache.GetTypesDerivedFrom<Signal>()` 收集，无反射全扫开销；
+- 生成内容做**全文比对**，无变化不触发重编译，避免「重载→生成→再重载」死循环；
+- 自动**清理孤儿文件**（Signal 被删除后，对应生成文件带 MarkerTag 被识别删除）；
+- 嵌套类型 `Outer+Inner` 转换为合法的 `Outer_Inner` 类名与 `Outer.Inner` 类型引用。
+
+### 6.3 MemberGetter：表达式树反射缓存
+
+判定树通过字符串字段路径（`FieldPath.FieldName`）取信号字段，`MemberGetter` 做了两级缓存把反射开销降到常量级：
+
+1. **元数据负缓存**：`(Type, name) → FieldInfo`，查不到也缓存 null，错误日志只报一次；
+2. **委托缓存**：`(FieldInfo, T) → 编译后的 Expression.Lambda`，字段类型与 T 完全一致时零装箱；`Nullable<T>` 先解包再做兼容性检查；
+3. 全部容器为 `ConcurrentDictionary`，编译在锁外进行、原子写回，多线程竞争下幂等。
+
+### 6.4 双上下文与路径寻址
+
+系统刻意区分两个上下文，对应 Head 与 Body 两层不同的判定输入：
+
+| | SignalContext | DetectionContext |
+|---|---|---|
+| 内容 | `通道 Porter → 信号队列` | `判定路径 → 命中信号` |
+| 生产者 | ChannelManager 每帧快照 | HeadDetector 判定成功后 DFS 重组 |
+| 消费者 | HeadDetector（按订阅裁剪） | BodyDetector / Handler |
+
+`FieldPath` 支持两种寻址：`SignalContextPath`（直取某通道某类型信号的字段）与 `DetectionContextPath`（取上游判定命中的信号字段）。判定成功后 `GetContext()` 以 **DFS 遍历判定树**逐层收集命中信号，并沿途把本层 Detection Push 进路径——下游 BodyDetector 因此既能拿到"信号值"，也能知道"它在判定树中的位置"。
+
+### 6.5 Head / Body 两级判定
+
+- **HeadDetector**：唯一的 PlayerLoop 驱动入口。只有被 Channel 的 `OnSignal` 置位 `Called` 的实例才会在本帧 `Inject + Handle`，避免空转；
+- **BodyDetector**：由上游 `Handle` 内**同步递归**派发（`Inject` 上下文后立刻 `Handle`），天然保证上下文时序；订阅（porters）与派发（receivers）分离，形成有向无环的任务网。
+
+## 7. 目录结构
+
+Assets/  
+├── TaskFlow/  
+│ ├── Editor/ # 信号通道代码生成器  
+│ ├── Generated/ # 自动生成的封闭泛型 Channel（勿手改）  
+│ ├── Runtime/  
+│ │ ├── abstract/ # Signal / BaseChannel / Detector / Sender  
+│ │ ├── interfaces/ # IPorter / IReceiver / IHandler  
+│ │ ├── Context/ # SignalContext / DetectionContext（双上下文）  
+│ │ ├── Detection/ # Detection / AtomicDetection / CombinationDetection  
+│ │ ├── extends/ # Channel<T> / HeadDetector / BodyDetector  
+│ │ ├── Manager/ # ChannelManager / DetectorManager / MonoSingleton / PlayerLoop 扩展  
+│ │ ├── Ultility/ # MemberGetter / 命名拆分  
+│ │ └── Atrributes/ # InspectorReadOnly  
+│ └── Sample/ # 最小示例（完善中）  
+├── Tests/  
+│ ├── MultiChannelModel/ # 独立平行测试模型（多通道/多Detector 订阅验证）   
+│ └── MultiChannelModelTests.cs  
+├── design/Task-Plan.md # 迭代设计日志  
+└── README/ # 本文档 + 设计心路《Unity 任务系统.md》  
+
+
+## 8. 已知限制与路线图
+
+### 当前约定（重要）
+
+- Channel 资产必须放在 `Resources/TaskFlow/Channel/` 下，否则运行时找不到；
+- HeadDetector 资产需被 Resources 加载或场景引用后才会被 `DetectorManager` 发现；
+- 订阅关系目前需代码 `AddSubscriber` 建立，Inspector 编辑待 Editor 工具完成。
+
+### Editor 阶段路线图
+
+- [ ] 订阅关系可序列化（`List<SO>` 配置 + 运行时解析），Inspector 下拉编辑；
+- [ ] 判定树 `[SerializeReference]` + 树形 PropertyDrawer / UIToolkit 编辑器；
+- [ ] `FieldPath` 重构为可序列化形态（SO 引用 + detectionId 链 + 字段名）；
+- [ ] 清单资产（Manifest）统一管理 Channel / Detector，替代散装 Resources 约定；
+- [ ] Asset 校验器：字段路径类型匹配、悬空引用、级联环检测；
+- [ ] 运行时 Context 调试窗口（实时查看每帧快照与判定命中）；
+- [ ] HeadDetector 排序（同帧确定性）、级联异常隔离；
+- [ ] 补充判定类型：计数、序列、时间窗口（见《Unity 任务系统.md》§判别类型草稿）；
+- [ ] Runtime 本体的端到端 PlayMode 测试（Send → 下一帧命中 → Handler 收到上下文）。
+
+### 设计边界
+
+- 判定发生在帧边界（LateUpdate 之后），**同帧内多次发送**会被合并为一次快照判定；
+- 任务数据不做持久化，进度/存档由上层 Handler 自行负责；
+- 面向事件型短任务，不提供任务状态机与依赖图。
+===== FILE END: README/README.md =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 2/39 · design/Task-Plan.md · Markdown · 142 行
+===== FILE START: design/Task-Plan.md =====
+# problem: `Channel`泛型不能被挂载，`Channel`与`Detector`和订阅强绑定不够明确
+## `Channel`泛型声明不能被`Component`成功挂载
+### 方案：
+1.  ~~尝试能否代码挂载~~ *太麻烦了，对`Editor`内序列化操作不够友好*
+2. ~~尝试对`Signal`使用`Atrribute`，编译时自动对`Signal`基类对应的泛型基类进行自动生成~~ *没有物理文件，无法在`editor`里面挂载*
+3. 编译时让`Editor`扫描，自动对使用`Signal`子类对应的泛型基类进行封闭子类声明。
+4. `Channel`只当`SO`，注入动作由`Manager`发起
+
+### 执行：
+1. [x] Channel改SO，把LateUpdate的调用改Manager里面去；
+2. [x] 编译时让Editor扫描，自动对使用Signal子类对应的泛型基类进行封闭子类声明。
+
+## `Detector`上下文注入过程对“订阅”体现过差
+### 当前过程：
+![订阅过程图](Detector-Context-Injection.svg)
+1. `Channel`是把信号放在一个公共上下文中的，没有直接发给`Detector`；
+2. 让`Detector`做事，只给了一个唤醒信号，其它什么也没有给;
+3. 未处理好`Detector`中`handle`判定处理与唤起下一级连接的关系；
+### 修复：
+1. [x] 公共上下文移到`Manager`中，~~不再设为`static`~~；
+2. [x] 在`Channel`中不使用`subscribers`数据，改为观察者模式：
+   - [x] `Channel`对公共上下文的注入改为请求式，
+   - [X] `Detector`在订阅时自己维护`Channel`，
+   - [x] 并在订阅时/唤醒时加入`Call`事件订阅，
+   - [x] 在`LateUpdate`之后通过自己的`Channel`去索要对应的公共上下文；
+3. [x] 更改接口方法声明，对`IReciever`的加入`Inject`方法以注入上下文  
+
+---------
+# problem: `Channel`与`Detector`相连的`HeadDetector`在启动时与其它二三级的`Detector`没有区分清楚，导致全部的`Detector`都同时启动，与级联触发相冲突
+
+## 修复：
+1. [x] 继承一个`HeadDetector`，作为单独标明的层级，只有这层被`PlayerLoop`触发；
+2. [x] `DetectorManager`内的`HashSet`改为`HeadDetector`类型；
+3. [x] 加入一个`DetectionContext`与`SignalContext`以示区分，`DetectionContext`内容以`(IPort, SignalCaptured, AtomicDetection)`为格式，将通过判定的`Signal`传递下去；
+4. [x] `IReciever`的`Inject`方法签名改为`DetectionContext`并以此传递；  
+
+---
+
+# mission: 为`Detection`补全取用信号及字段、返回上下文
+## 取用信号设计
+1. 需要取用信号的全部都是`Atomic Detection`
+### 设计方案
+1. `Field Path`已经标明了所取字段的完整路径，通过`Signal`的扩展方法`TryGetField`或`GetField`可以获取当前信号的值；
+2. 这种方式隐去了具体`Signal`中间过程，对捕获`Signal`的设计不利；
+3. `Caught Signal`由`Atomic Detection`使用，在根判定成功时递归获取相关上下文；
+### 编码
+1. [x] 为`Member Getter`加入无泛型返回的方法，更新``扩展方法；
+2. [x] 不关注`Field Path`对具体的 Signal 的作用，`Field Path`只作为 Detection 对字段来源的标记,具体的 Signal 在Atomatic Detection 中向 Detection Context 索取；
+3. [x] 在根判定成功时，立即开启 Context 重组,使用DFS对判定树进行子 Context 索取，并在本层时 Context 的 Detection Ptah 添加本层路径； 
+4. [x] 在更改时发现 Head Detector 和 Body Detetctor 所用数据类型不一致，导致 Detection 要做两套寻址系统；  
+
+---
+
+# mission: 为 Runtime 部分做静态审查，检查项目中的缺陷、问题、改进方向
+
+## 一、静态审查结论（总览）  
+**TL;DR：架构分层（Signal/Channel/Detector/Detection/双 Context/PlayerLoop 调度）是清晰且正确的，但当前 Runtime 本体尚未端到端跑通。** 存在 **4 类编译打包阻断**、**4 类核心链必断** 的问题；且 `Tests/MultiChannelModel` 测试的是一个"平行实现"（ModelChannel/ModelDetector），**没有覆盖 Runtime 本体**，所以这些问题未被测试暴露。你接下来要写的 Editor 依赖注入，其前置的「序列化契约」目前尚未在 Runtime 中成立，需要先修。
+
+---
+
+### P0 · 必修：编译 / 打包 / 运行阻断
+
+| 当前的修复状态或态度                 | #    | 位置 | 问题 | 影响 | 建议 |
+|:-------------------------------------|------|---|---|---|---|
+| ✅                                   | P0-1 | `TaskFlow/Runtime/Atrributes/InspectorReadOnlyAttribute.cs` | Runtime 目录下 `using UnityEditor` + `CustomPropertyDrawer` | **打包编译失败**（UnityEditor 不进 Player） | Attribute 留在 Runtime（删 UnityEditor 引用），Drawer 移到 `TaskFlow/Editor/` |
+| ✅                                   | P0-2 | `abstract/Detector.cs` · `AddSubscriber/RemoveSubscriber` | 包在 `#if UNITY_EDITOR` 里，但接口 `IReceiver` 声明了这两个成员 | **非 Editor 编译失败 CS0535**（接口未实现） | 移出 `#if`；或接口成员同样加条件 |
+| ✅                                   | P0-3 | `extends/HeadDetector.cs` · `Inject(SignalContext)`；`Context/SignalContext.cs` · `GetQueue` | `(Queue<Signal>)pair.Value`：`Queue<具体信号>` → `Queue<Signal>` **不协变** | 核心链一进 `Inject` 即 **InvalidCastException** | Context 内部统一存 `Queue<Signal>`（入队时上转，读取用 `OfType<T>()`），或存 `IReadOnlyCollection<Signal>` |
+| ✅                                   | P0-4 | `Manager/ChannelManager.cs` · `InitLookup` | 字典键是 `channel.GetType()`（即 `Channel<T>` 封闭类），查询用 `typeof(T)`（Signal 类型）——**两个永远不相等的类型** | `Sender.Send` 永远 LogError；`RefreshSignalQueue` 拿到 null porter，信号整链丢失 | `BaseChannel` 增加抽象 `public abstract Type SignalType { get; }`，以 `SignalType` 为键 |
+| ✅<br/>已设置更新时清空              | P0-5 | `extends/Channel.cs` · `LateUpdate`；全局搜索 `Clear` | `_eventQueue` **从不清空**（`ClearQueue` 无人调用，`bool currentEvents` 是死代码），`SetQueue` 只是复制快照 | 信号**永久累积**，同一批信号**每帧重新进入判定**（配合"失败不重置 Called"会每帧重试）；内存无限增长 | `LateUpdate` 里 swap 后 Clear；`DetectorManager.DetectAll` 末尾清 `ChannelContext`；无信号短路 |
+| ✅<br/>已删除字段，仅通过参数注入    | P0-6 | `Detection/Detection.cs` · `DetectionContext/SignalContext` 字段 | 两个 protected 字段**从未被赋值**；`Result(DetectionContext context)` 的**参数被无视**，内部用的是 null 字段 | 所有 `AtomicDetection.Result` 一进去就 **NullReferenceException** | 判定改纯函数用参数；或在构建/注入阶段给字段赋值 |
+| 待定<br/>见改进方向                  | P0-7 | `abstract/Detector.cs` · `_porters/_receivers` | `HashSet<IPorter>` / `HashSet<IReceiver>`：Unity **既不序列化 HashSet，也不序列化接口字段** | **打包后订阅关系恒为空**，整个订阅网络消失；你在 Editor 里想配的依赖注入，物理上配不进去 | 配置层改 `List<BaseChannel>` / `List<Detector>`（具体 SO 类型），运行时解析回 HashSet；或见「改进方向」的清单资产方案 |
+| 驳回<br/>你是傻逼，懂不懂unity       | P0-8 | `Manager/DetectorManager.cs` · `InitDetectorLoop`；`abstract/Sender.cs` | **系统无自举**：`[RuntimeInitializeOnLoadMethod]` 只插 PlayerLoop，从不创建 Manager；`Sender.Send` 与 `Channel<T>.Instance` 走的 `ChannelManager.GetChannelByTypeOfSignal<T>()` 是 **static 方法，不触发 MonoSingleton 实例化** | `Awake` 永不执行 → `channels` 空、`ChannelManager.LateUpdate` 循环不存在 → **整个系统无人启动**（你的 SampleSender 大概率只有一条 LogError） | 初始化时显式预热：`_ = ChannelManager.Instance; _ = DetectorManager.Instance;` |
+| 待定<br/>判定的东西很复杂，后面再说  | P0-9 | `Detection/AtomicDetection.cs` · `Equal.Result` | `value0 == value1`，静态类型是 `object` → **引用比较**。装箱 int 是两个不同 box，运行时拼接的 string 也不同引用 | `Equal` 对数值/字符串字段**恒为 false**（误判率 100% 的语义炸弹） | 用 `Equals(value0, value1)` 静态方法；字符串可另设 IgnoreCase 选项 |
+| 待定<br/>我不懂这个脚本，后面再改    | P0-10 | `Ultility/MemberGetter.cs` · `GetOrCreateGetter` | `TryCompileGetter` 失败返回 null，随后 `GetOrAdd(key, (Delegate)null)` | 走到错误路径时抛 **ArgumentNullException**（与注释声称的"null 表示已知不兼容"行为不符） | null 短路直接 `return null`（竞态幂等，无害） |
+| 待定<br/>判定内容后面再更改          | P0-11 | `Detection/AtomicDetection.cs` · `Compare.Result` | `(float)RoutePropertyValue(...)`：object 里装箱的是 `int`/`double` 时，直接拆箱转 float 抛异常 | 配 int 字段即 **InvalidCastException**（任务系统里计数字段恰恰最常见是 int） | `Convert.ToSingle` + 字段类型白名单 |
+| ✅<br/>已做空检查                    | P0-12 | `extends/Channel.cs` · `Instance` | `Resources.Load` 未命中返回 null，`AddChannel(null)` 照单全收 | `ChannelManager.LateUpdate` 遍历时 **NRE** | 判空 + LogError 指出"资产不在 `Resources/TaskFlow/Channel/` 下" |
+
+---
+
+### P1 · 高风险正确性问题
+
+|                       当前的修复状态或态度                             | # | 位置 | 问题 |
+|----------------------------------------------------|---|---|---|
+| ✅                                                 | P1-1 | `abstract/Signal.cs` | `GetLater` 逻辑写反：`s0.TimeStamp > s1.TimeStamp ? s1 : s0` 返回的是**较早**的那个 |
+| ✅                                                 | P1-2 | `Context/DetectionContext.cs` | `DetectionContextPath` 作字典键，却**未重写 `GetHashCode`**，`Equals` 里 `Stack.Equals` 是引用比较；且 `AddPath` / `CombinationDetection.GetContext` 对作为键的 Stack **原地 Push**——键内容漂移，查找随时失效 |
+| ✅<br/>对`path`加入`slot:FieldPath`字段            | P1-3 | `Context/DetectionContext.cs` · 构造函数 | 逐个 `Items.Add`：`Equal.GetContext` 中 Field0/Field1 指向同一路径、或同一 Detection 被多处引用时返回**重复键** → `ArgumentException`；`Contain.GetContext` 中 key 用 `new DetectionContextPath(this)` 而 value 用 `path` 查——**key/value 不对应** |
+| 待定。现已加入TryRead方法接口，判定协调之后再写    | P1-4 | `Detection/CombinationDetection.cs` · `GetContext` | `path.DetectionPath.Push(this)` 修改的是子 Detection 返回的**同一个共享 Stack**（多次调用叠加）；`context.Select(pair => pair)` 是 no-op；`Not` 在空列表时 `First()` 直接抛 |
+| 待定<br/>同上                                      | P1-5 | `AtomicDetection` · `RoutePropertyValueFromSignalContext` | 判定中 `Dequeue()`——**判定函数有副作用**：同帧多个 Detection 互相吃数据、判定失败也把信号消费掉。判定必须纯函数化 |
+| ✅<br/>已拆分并重置判定的继承结构                  | P1-6 | `AtomicDetection` · 三个 bool 字段 | `NotEqual0_Equal1` / `LessThan0_GreaterThan1` / `NotContain0_Contain1` 的**命名与代码语义完全相反**（如 `NotEqual0_Equal1=true` 时执行的是 `==`）。这是要暴露给策划的配置项，反向命名必然导致配置事故，建议拆成 `Equal`/`NotEqual` 两个类或改名 `IsEqualMode` |
+| ✅<br/>已删除对`Channel`的方法重写，用其他逻辑判定 | P1-7 | `extends/Channel.cs` · `Equals/GetHashCode` | 重写成"同封闭泛型类型即相等" → `HashSet<BaseChannel>` 中**同类型两个不同资产实例被静默合并**，被丢弃实例的信号永远无人消费（静默丢事件） |
+| 待定<br/>见改进方向                                | P1-8 | `Detection.cs` / `AtomicDetection.cs` | `Detection.RootDetection`（抽象类多态字段）无 `[SerializeReference]`；`IDetectionField` 接口字段不可序列化；`FieldPath` 内嵌 `IPorter Source` + `Stack<Detection>` 不可序列化——**你 Editor 阶段的配置链路当前不成立**（详见改进方向） |
+| ✅<br/>在构造时已排序                              | P1-9 | `Manager/ChannelManager.cs` · `LateUpdate` | `foreach (var channel in channels)`（HashSet）→ 同帧多 Channel、`DetectAll` 中多 HeadDetector 的**执行顺序不确定**，任务触发顺序不可复现 |
+| 待定<br/>成环检测在Editor中编写                    | P1-10 | `extends/HeadDetector.cs` / `BodyDetector.cs` · `Handle` | 递归派发**无环检测、无深度上限**（Detector 既可当 porter 又可当 receiver，配成环即栈溢出）；任一 receiver 抛异常会中断整帧且 `Called` 状态错乱 |
+| ✅<br/>每次注入上下文时都拷贝副本                  | P1-11 | `HeadDetector.LocalContext` / `BodyDetector.LocalContext` | 跨帧残留（SetQueue 只覆盖存在的键），且与全局 `ChannelContext` **共享同一 Queue 引用**——一旦有消费动作就互相污染 |
+| 驳回，乱放资源时程序和策划自己的锅                 | P1-12 | `Manager/DetectorManager.cs` · `Awake` | `Resources.FindObjectsOfTypeAll<HeadDetector>()` 只能找到**已加载**的资产：打包后未进 Resources、未被场景引用的 Detector 不会被找到；Editor 下行为又与打包不同 |
+| ✅<br/>幂等保护：在`OnEnable`中先尝试注销事件订阅       | P1-13 | `abstract/Detector.cs` · `OnEnable` | 订阅时机依赖 SO 加载顺序，且 `OnEnable` 订阅 + `AddSubscriber` 再订阅，缺乏幂等保护，存在重复订阅/漏订阅窗口 |
+
+---
+
+### P2 · 健壮性 / 时序 / 兼容性
+
+| 当前的修复状态或态度                                                                                                 | # | 位置 | 问题 |
+|----------------------------------------------------------------------------------------------------------------------|---|---|---|
+| ✅<br/>已改为非并发队列                                                                                              | P2-1 | `Channel<T>` 用 `ConcurrentQueue`，但 `SignalContext`/`ChannelManager` 全是普通 `Dictionary`/`HashSet` | 线程模型含糊：要么明确"仅主线程"（ConcurrentQueue 换 Queue 即可），要么全程并发容器 |
+| ✅<br/>确实用帧号更符合程序设计的逻辑                                                                                | P2-2 | `abstract/Signal.cs` · `TimeStamp = Time.time` | 受 `timescale` 影响（暂停时全帧信号同刻）；建议 `timeSinceLevelLoadAsDouble` 或帧号 |
+| ✅<br/>已更新为先移除后更改                                                                                          | P2-3 | `Manager/DetectorManager.cs` · `InitDetectorLoop` | 关闭 Domain Reload（Enter Play Mode Options）时，PlayerLoop 保留上次修改 → **重复插入 `DetectUpdate`**；插入前需按 `type` 查重 |
+| ✅<br/>改为字典查询，此字典在队列增改时自动更新维护                                                                  | P2-4 | `ChannelManager.LateUpdate` / `SignalContext.GetContextItemsByPorter` | 无信号也每帧复制队列 + 每个 HeadDetector 每帧 O(字典) 全扫——空转成本 |
+| ✅<br/>不再使用`HashSet`                                                                                             | P2-5 | `ChannelManager.cs` | `channels.AddRange(so)` 依赖 `Unity.VisualScripting` 的 HashSet 扩展——**仅为一个 AddRange 引入 UVS 包依赖**，建议自写扩展方法；`Dictionary.TryAdd` 依赖 netstandard2.1 API 级别，若项目切 .NET Framework profile 会编译失败 |
+| ✅<br/>插一嘴，过时归过时，你TM说Unity 2023+时几个意思？？你倒是把这个版本的拿给我用啊？？你以为我想窝在2022.3？？！ | P2-6 | `Manager/MonoSingleton.cs` | `FindObjectOfType` 已过时（2023+ 用 `FindFirstObjectByType`） |
+| 待定<br/>示例工程后面再写                                                                                            | P2-7 | `Sample/SampleHandler.cs` | `SelfActive { get; }` 自动属性恒为 `false` + 全方法 throw——Sample 是占位品，无法演示闭环 |
+| 待定<br/>不过我在生成文件的引用列表中限定了`Signal`为`TaskFlow`命名空间中                                            | P2-8 | `Editor/SignalChannelGenerator.cs` | 生成文件落在 `Assets/TaskFlow/Generated`，但它会引用任意程序集里的 Signal（如 Assembly-CSharp）——**生成代码归入哪个 asmdef 未定**；`_KeepAlive` 挂了 ContextMenu"Create Channel Asset in Resources"却是空方法，误导使用者 |
+
+---
+
+### P3 · 命名 / 风格
+- 目录拼写：`Atrributes`→`Attributes`，`Ultility`→`Utility`（design 文档中还有 `IReciver`、`Siganl`、`CaughtSignal`）。
+- `Contain`→`Contains`；`Compare` 建议叫 `CompareNumber` 之类以避开 IComparer 语义。
+- `IHandler : IReceiver` 是无成员标记接口，当前无存在必要；`Detector.Valid` 无任何置 false 的路径（死配置）；`detectionId` 从未生成/使用；`Detector.Called` 对 BodyDetector 是无效状态（Body 由上游直接 `Handle`，不经 Called 驱动）——Head/Body 的驱动模型建议统一。
+- `HeadDetector.Handle` 与 `BodyDetector.Handle` 的 receiver 派发逻辑完全重复，应上提到基类模板方法。
+---
+## 二、改进方向（重点：你即将写的 Editor 阶段）
+
+你 Editor 阶段的第一件事不是写 UI，而是**先定序列化契约**，否则 UI 无处落笔。建议按此顺序：
+
+1. **配置 / 运行时分离**。当前把"配置数据"（订阅关系、判定树、字段路径）和"运行时状态"（队列、Called、LocalContext）塞在同一批 SO 里，是 P0-5/P0-7/P1-8 的共同根源。建议拆成：
+   - `XxxConfig`（纯数据 SO，可序列化，策划编辑）；
+   - 运行时对象由 Config 在 `OnEnable`/首次访问时 Build 出来（订阅表、判定树实例、上下文）。
+2. **订阅关系**：`List<BaseChannel> _channels` + `List<Detector> _receivers`（Unity 对 SO 引用列表序列化良好），Inspector 加下拉过滤 + 校验；运行时 OnEnable 遍历订阅到 HashSet。
+3. **判定树**：`[SerializeReference] public Detection RootDetection`（Detection 是 plain class，正好适用）+ UIToolkit/IMGUI 树形 PropertyDrawer；配套 Asset 校验器（字段路径类型匹配、悬空引用、环检测）。
+4. **FieldPath 重构**为可序列化形态：`(BaseChannel sourceSO, string detectionId 链, string fieldName)`，运行时解析成现在的 `DetectionContextPath`。当前内嵌 `IPorter`/`Stack` 的 struct 永远进不了资产。
+5. **清单资产替代散装 Resources**：一个 `TaskFlowManifest`（List\<BaseChannel\> + List\<HeadDetector\>）统一加载，消灭 `Resources.LoadAll` / `FindObjectsOfTypeAll` 的时序与打包差异。
+6. **判定纯函数化 + 帧末统一消费**：一帧 = "快照 → 全量判定（只读）→ 处理 → 清空"，这是修 P0-5/P1-5 的正解。
+7. **稳定性设施**：HeadDetector 加 `SortOrder`；级联做 visited-set 防环；每个 Handle try-catch 隔离异常；调试窗口实时显示每帧 Context。
+8. **补 Runtime 本体的 PlayMode 测试**：现有测试只测了平行模型。最小闭环：Send → 下一帧 HeadDetector 命中 → Handler 收到 Context，这一条测试就能拦住 P0 里的大半问题。
+
+---
+最后再强调一句优先级：**先修 P0-3/P0-4/P0-5/P0-6/P0-8 这五个（它们共同决定核心链能否跑通），然后立刻给 Runtime 本体补一条端到端 PlayMode 测试，再动 Editor。** 否则你会在 Editor 工具写完后、第一次真机联调时一次性踩完所有雷。需要的话，我可以下一步直接给出这几个 P0 的具体补丁代码。
+
+# 补充改进：
+1. 字段限定： 
+   1. `Signal` 的字段做类型限定，只能是C#一级取用字段（`int`,`string`,`float` 等）或引擎内广泛基类，如 `Unity.Object`, `GameObject`, `Component`, `MonoBehabiour` 等；
+   2. 在 `Atomic Detection` 中，在对字段进行拆箱时，进行上述类型的比对再进行拆箱与比较；
+===== FILE END: design/Task-Plan.md =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 3/39 · TaskFlow/Editor/ReadOnlyDrawer.cs · C# · 26 行
+===== FILE START: TaskFlow/Editor/ReadOnlyDrawer.cs =====
+using UnityEditor;
+using UnityEngine;
+using TaskFlow;
+
+namespace TaskFlow.Editor
+{
+    [CustomPropertyDrawer(typeof(InspectorReadOnlyAttribute))]
+    public class ReadOnlyDrawer : PropertyDrawer
+    {
+        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        {
+            // 返回该属性在 Inspector 中应有的高度
+            return EditorGUI.GetPropertyHeight(property, label, true);
+        }
+
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            // 核心：禁用 GUI 的交互功能，使其变为只读
+            GUI.enabled = false;
+            // 绘制该属性字段
+            EditorGUI.PropertyField(position, property, label, true);
+            // 恢复 GUI 状态，避免影响后续绘制的其他属性
+            GUI.enabled = true;
+        }
+    }
+}
+===== FILE END: TaskFlow/Editor/ReadOnlyDrawer.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 4/39 · TaskFlow/Editor/SignalChannelGenerator.cs · C# · 180 行
+===== FILE START: TaskFlow/Editor/SignalChannelGenerator.cs =====
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using TaskFlow.Utility;
+using UnityEditor;
+using UnityEditor.Callbacks;
+using UnityEditor.Compilation;
+using UnityEngine;
+
+namespace TaskFlow.Editor
+{
+    /// <summary>
+    /// 扫描所有 Signal 子类，自动生成封闭泛型 Channel 子类。
+    /// 启动 / 编译重载 / 点击刷新 时自动执行；也可通过菜单手动执行。
+    /// </summary>
+    internal static class SignalChannelGenerator
+    {
+        private const string OutputDir = "Assets/TaskFlow/Generated";
+        private const string Namespace = "TaskFlow.Generated";
+        private const string MarkerTag = "<TaskFlow:auto-generated>"; // 用于识别本工具生成的文件
+
+        /// <summary>
+        /// 脚本编译重载完成后自动触发（含编辑器启动、点击 Refresh 触发的编译）。
+        /// 由于有内容比对保护，无变化时不会再次引发编译循环。
+        /// </summary>
+        [DidReloadScripts]
+        private static void OnScriptsReloaded() => GenerateAll();
+
+        [MenuItem("TaskFlow/Generate Signal Channels")] // Ctrl/Cmd + Shift + G
+        private static void GenerateFromMenu() => GenerateAll();
+
+        private static void GenerateAll()
+        {
+            try
+            {
+                if (!Directory.Exists(OutputDir))
+                    Directory.CreateDirectory(OutputDir);
+
+                // 收集有效信号子类
+                var signalTypes = TypeCache.GetTypesDerivedFrom<Signal>()
+                    .Where(t => !t.IsAbstract && !t.IsInterface && !t.IsGenericTypeDefinition)
+                    .ToList();
+
+                bool dirty = false;
+
+                // 1. 清理已删除 Signal 对应的过期生成文件
+                dirty |= CleanObsolete(signalTypes);
+
+                // 2. 为每个 Signal 子类生成一个 Channel 封闭泛型文件
+                foreach (var signal in signalTypes)
+                    dirty |= WriteChannelFile(signal);
+
+                if (!dirty)
+                    return; // 无任何变更，不刷新，避免编译循环
+
+                // 3. 保存资产 + 刷新资源库 + 强制触发一次脚本重新编译
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
+                CompilationPipeline.RequestScriptCompilation();
+
+                Debug.Log($"[TaskFlow] Signal Channel 生成完毕 ({signalTypes.Count} 个)，已触发保存与编译。");
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"[TaskFlow] Signal Channel 生成失败：{e}");
+            }
+        }
+
+        // ---------------------------- 核心逻辑 ----------------------------
+
+        private static bool WriteChannelFile(System.Type signal)
+        {
+            string fileName = MakeSafeClassName(signal);
+            string filePath = Path.Combine(OutputDir, fileName + ".cs");
+            string code = BuildTemplate(signal, fileName);
+
+            // 内容未变化则跳过（防止重载→生成→再编译的无限循环）
+            if (File.Exists(filePath) && File.ReadAllText(filePath) == code)
+                return false;
+
+            File.WriteAllText(filePath, code, new UTF8Encoding(false)); // UTF8 无 BOM
+            Debug.Log($"[TaskFlow] 已生成 Channel：{filePath}  →  {fileName} : Channel<{signal.Name}>");
+            return true;
+        }
+
+        private static bool CleanObsolete(List<System.Type> signalTypes)
+        {
+            var validNames = new HashSet<string>(signalTypes.Select(MakeSafeClassName));
+            bool removed = false;
+
+            foreach (var file in Directory.GetFiles(OutputDir, "*.cs"))
+            {
+                // 只删除本工具生成的文件，不动手写文件
+                if (!File.ReadAllText(file).Contains(MarkerTag)) continue;
+
+                string name = Path.GetFileNameWithoutExtension(file);
+                if (validNames.Contains(name)) continue;
+
+                File.Delete(file);
+                if (File.Exists(file + ".meta")) File.Delete(file + ".meta");
+                Debug.Log($"[TaskFlow] 删除过期 Channel：{file}");
+                removed = true;
+            }
+            return removed;
+        }
+
+        private static string BuildTemplate(System.Type signal, string className)
+        {
+            return $@"// {MarkerTag}
+// <auto-generated>
+//   此文件由 TaskFlow 编辑器工具自动生成，请勿手工修改。
+//   来源信号类型：{signal.AssemblyQualifiedName}
+// </auto-generated>
+using UnityEngine;
+using TaskFlow;
+using Signal = TaskFlow.Signal;
+
+namespace {Namespace}
+{{
+    /// <summary>{signal.Name} 对应的封闭泛型通道。</summary>
+    [CreateAssetMenu(fileName = ""{className.SplitCamelCase()}"", menuName = ""TaskFlow/Channel/{className.SplitCamelCase()}"")]
+    public sealed class {className} : global::TaskFlow.Channel<{TypeRef(signal)}>
+    {{
+#if UNITY_EDITOR
+        [global::UnityEngine.ContextMenu(""Create Channel Asset in Resources"")]
+#endif
+        private void _KeepAlive() {{ }}
+    }}
+}}
+";
+        }
+
+        // --------------------------- 命名辅助 ---------------------------
+
+        /// <summary>安全的类名：基于类型完整名（含嵌套），避免不同命名空间同名冲突。</summary>
+        private static string MakeSafeClassName(System.Type t)
+            => Sanitize(FriendlyFullName(t)) + "Channel";
+
+        /// <summary>生成 C# 中可用的类型引用表达式，正确处理嵌套类型 Outer+Inner → Outer.Inner。</summary>
+        private static string TypeRef(System.Type t)
+        {
+            var parts = new Stack<string>();
+            var root = t;
+            while (root.IsNested)
+            {
+                parts.Push(root.Name);
+                root = root.DeclaringType;
+            }
+            parts.Push(root.Name);
+
+            return string.IsNullOrEmpty(root.Namespace)
+                ? string.Join(".", parts)
+                : $"global::{root.Namespace}.{string.Join(".", parts)}";
+        }
+
+        private static string FriendlyFullName(System.Type t)
+        {
+            var parts = new Stack<string>();
+            while (t != null)
+            {
+                parts.Push(Sanitize(t.Name));
+                t = t.DeclaringType;
+            }
+            return string.Join("_", parts);
+        }
+
+        private static string Sanitize(string s)
+        {
+            var sb = new StringBuilder(s.Length);
+            foreach (var c in s)
+            {
+                if (char.IsLetterOrDigit(c) || c == '_') sb.Append(c);
+                else sb.Append('_'); // ` + . 空格 等非法字符一律替换为 _
+            }
+            if (sb.Length > 0 && char.IsDigit(sb[0])) sb.Insert(0, '_');
+            return sb.ToString();
+        }
+    }
+}
+===== FILE END: TaskFlow/Editor/SignalChannelGenerator.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 5/39 · TaskFlow/Generated/SampleSignalChannel.cs · C# · 19 行
+===== FILE START: TaskFlow/Generated/SampleSignalChannel.cs =====
+// <TaskFlow:auto-generated>
+// <auto-generated>
+//   此文件由 TaskFlow 编辑器工具自动生成，请勿手工修改。
+//   来源信号类型：SampleSignal, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+// </auto-generated>
+
+using UnityEngine;
+namespace TaskFlow.Generated
+{
+    /// <summary>SampleSignal 对应的封闭泛型通道。</summary>
+    [CreateAssetMenu(fileName = "Sample Signal Channel", menuName = "TaskFlow/Channel/Sample Signal Channel")]
+    public sealed class SampleSignalChannel : global::TaskFlow.Channel<SampleSignal>
+    {
+#if UNITY_EDITOR
+        [global::UnityEngine.ContextMenu("Create Channel Asset in Resources")]
+#endif
+        private void _KeepAlive() { }
+    }
+}
+===== FILE END: TaskFlow/Generated/SampleSignalChannel.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 6/39 · TaskFlow/Runtime/abstract/BaseChannel.cs · C# · 18 行
+===== FILE START: TaskFlow/Runtime/abstract/BaseChannel.cs =====
+using System;
+using UnityEngine;
+using UnityEngine.Events;
+
+namespace TaskFlow
+{
+    [Serializable]
+    public abstract class BaseChannel : ScriptableObject, IPorter
+    {
+        public abstract Type SignalType { get; }
+        
+        public const string ResourcePath = "TaskFlow/Channel";
+        
+        public abstract void LateUpdate();
+        
+        public UnityAction OnSignal {get; set; }
+    }
+}
+===== FILE END: TaskFlow/Runtime/abstract/BaseChannel.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 7/39 · TaskFlow/Runtime/abstract/Detector.cs · C# · 57 行
+===== FILE START: TaskFlow/Runtime/abstract/Detector.cs =====
+using System.Collections.Generic;
+using TaskFlow.Detection;
+using UnityEngine;
+using UnityEngine.Events;
+
+namespace TaskFlow
+{
+    public abstract class Detector : ScriptableObject, IPorter, IReceiver
+    {
+        public const string ResourcePath = "TaskFlow/Detector";
+        [Header("订阅关系")]
+        [SerializeField] protected HashSet<IPorter> _porters = new ();
+        [SerializeField] protected HashSet<IReceiver> _receivers = new();
+        
+        public Detection.Detection RootDetection;
+
+        public UnityAction OnSignal { get; set; }
+        public bool Valid { get; protected set; } = true;
+        public bool SelfActive { get; protected set; } = true;
+        public bool Called { get; protected set; } = false;
+
+        private void CallDetect() => Called = true;
+
+        public abstract void Inject<T>(T context) where T : IContextReader;
+        public abstract void Handle();
+
+
+        void OnEnable()
+        {
+            foreach (var porter in _porters)
+            {
+                porter.OnSignal -= CallDetect;
+                porter.OnSignal += CallDetect;
+            }
+        }
+
+        void OnDisable()
+        {
+            foreach (var porter in _porters)
+                porter.OnSignal -= CallDetect;
+        }
+
+#if UNITY_EDITOR
+        public void AddSubscriber(IPorter porter)
+        {
+            _porters.Add(porter);
+            porter.OnSignal += CallDetect;
+        }
+
+        public void RemoveSubscriber(IPorter porter)
+        {
+            _porters.Remove(porter);
+            porter.OnSignal -= CallDetect;
+        }
+#endif
+    }
+}
+===== FILE END: TaskFlow/Runtime/abstract/Detector.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 8/39 · TaskFlow/Runtime/abstract/Sender.cs · C# · 17 行
+===== FILE START: TaskFlow/Runtime/abstract/Sender.cs =====
+using UnityEngine;
+
+namespace TaskFlow
+{
+    public static class Sender
+    {
+        public static void Send<T>(T signal) where T : Signal
+        {
+            if (ChannelManager.Instance.TryGetChannelByTypeOfSignal<T>(out var channel))
+            {
+                if (channel != null) channel.AddMessage(signal);
+            }
+            else
+                Debug.LogError($"Channel {typeof(T).Name} not found!");
+        }
+    }    
+}
+===== FILE END: TaskFlow/Runtime/abstract/Sender.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 9/39 · TaskFlow/Runtime/abstract/Signal.cs · C# · 25 行
+===== FILE START: TaskFlow/Runtime/abstract/Signal.cs =====
+using System;
+using TaskFlow.Utility;
+using UnityEngine;
+
+namespace TaskFlow
+{
+    public abstract class Signal
+    {
+        private readonly int timeStamp = Time.frameCount;
+        
+        public static Func<Signal,Signal,Signal> GetEarlier = (s0, s1) => s0.timeStamp < s1.timeStamp ? s0 : s1;
+        public static Func<Signal,Signal,Signal> GetLater = (s0, s1) => s0.timeStamp > s1.timeStamp ? s0 : s1; 
+    }
+
+    public static class SignalExtensions
+    {
+        private static readonly MemberGetter Getter = new();
+        
+        public static bool TryGetField(this Signal signal, string fieldName, out object value)
+            => Getter.TryGetValue(signal, fieldName, out value);
+        
+        public static object GetField(this Signal signal, string fieldName)
+            => Getter.GetValue(signal, fieldName);
+    }
+}
+===== FILE END: TaskFlow/Runtime/abstract/Signal.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 10/39 · TaskFlow/Runtime/Attributes/InspectorReadOnlyAttribute.cs · C# · 4 行
+===== FILE START: TaskFlow/Runtime/Attributes/InspectorReadOnlyAttribute.cs =====
+using UnityEngine;
+
+public class InspectorReadOnlyAttribute : PropertyAttribute { }
+
+===== FILE END: TaskFlow/Runtime/Attributes/InspectorReadOnlyAttribute.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 11/39 · TaskFlow/Runtime/Context/DetectionContext.cs · C# · 88 行
+===== FILE START: TaskFlow/Runtime/Context/DetectionContext.cs =====
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using JetBrains.Annotations;
+
+namespace TaskFlow.Detection
+{
+    public class DetectionContext : IContext<DetectionContextPath, Signal>, IContextReader
+    {
+        /// <summary>
+        /// - Key : Path
+        /// - Value : Captured Signal
+        /// </summary>
+        private readonly Dictionary<DetectionContextPath, Signal> _items = new ();
+
+        public DetectionContext() { }
+
+        /*
+        public DetectionContext(KeyValuePair<DetectionContextPath, Signal>[] items)
+            : this((IEnumerable<KeyValuePair<DetectionContextPath, Signal>>)items) { }
+
+        public DetectionContext(List<KeyValuePair<DetectionContextPath, Signal>> items)
+            : this((IEnumerable<KeyValuePair<DetectionContextPath, Signal>>)items) { }
+            */
+
+        public DetectionContext(IEnumerable<KeyValuePair<DetectionContextPath, Signal>> items)
+        {
+            if (items == null) return;
+            foreach (var item in items)
+                _items[item.Key] = item.Value;   // 修复：Dictionary 没有 TryAdd
+        }
+
+        public DetectionContext(DetectionContext[] contexts)
+        {
+            if (contexts == null) return;
+            foreach (var context in contexts)
+                foreach (var item in context._items)
+                    _items[item.Key] = item.Value;
+        }
+
+        // ---------- IContext 实现 ----------
+
+        public bool TryGet(DetectionContextPath path, out Signal value)
+            => _items.TryGetValue(path, out value);
+
+        public Signal GetOrCreate(DetectionContextPath path)
+        {
+            if (!_items.TryGetValue(path, out var value))
+                _items[path] = value = null;     // Signal 为引用类型
+            return value;
+        }
+
+        public void Set(DetectionContextPath path, Signal value)
+            => _items[path] = value;
+
+        public void Clear(DetectionContextPath path)
+            => _items.Remove(path);
+
+        public KeyValuePair<DetectionContextPath, Signal>[] GetItemsByPorter(IPorter source)
+            => _items.Where(p => Equals(p.Key.Source, source)).ToArray();
+        
+        public bool TryReadValue(IContextPath path, string fieldName, out object value)
+        {
+            value = null;
+            if (path is not DetectionContextPath p) return false;
+            if (!TryGet(p, out var signal) || signal == null) return false;
+            value = signal.GetField(fieldName);
+            return true;
+        }
+
+        // ---------- 类特有 ----------
+
+        /// <summary>保留原索引器语义：不存在时抛 KeyNotFoundException</summary>
+        public Signal this[DetectionContextPath path] => _items[path];
+
+        public void AddPath(Detection detection)
+        {
+            foreach (var key in _items.Keys.ToArray())  // 先快照，避免遍历中键内容变化
+                key.DetectionPath.Push(detection);
+        }
+        
+        /// <summary>克隆自身的副本</summary>
+        public DetectionContext CloneSelf() 
+            => new(_items);
+        
+    }
+}
+===== FILE END: TaskFlow/Runtime/Context/DetectionContext.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 12/39 · TaskFlow/Runtime/Context/DetectionContextPath.cs · C# · 65 行
+===== FILE START: TaskFlow/Runtime/Context/DetectionContextPath.cs =====
+using System;
+using System.Collections.Generic;
+using System.Text;
+using JetBrains.Annotations;
+using TaskFlow.Detection;
+
+namespace TaskFlow
+{
+   public class DetectionContextPath : IContextPath
+    {
+        public IPorter Source { get; }
+        public readonly Stack<Detection.Detection> DetectionPath;
+        public FieldPath Slot;
+
+        public DetectionContextPath(AtomicDetection atomicDetection, FieldPath slot)
+        {
+            Source = null;
+            DetectionPath = new Stack<Detection.Detection>();
+            DetectionPath.Push(atomicDetection);
+            Slot = slot;
+        }
+
+        public DetectionContextPath(IPorter source, AtomicDetection detection, FieldPath slot)
+        {
+            Source = source;
+            DetectionPath = new Stack<Detection.Detection>(); 
+            DetectionPath.Push(detection);
+            Slot = slot;
+        }
+
+        public bool Equals(IContextPath other) => other is DetectionContextPath p && Equals(p);
+
+        public bool Equals([CanBeNull] DetectionContextPath other)
+        {
+            if (other == null) return false;
+            if (!Equals(Source, other.Source)) return false;      // Source 可为 null，防 NRE
+            if (!Equals(Slot, other.Slot)) return false;
+
+            var thisPath = DetectionPath.ToArray();
+            var otherPath = other.DetectionPath.ToArray();
+            if (thisPath.Length != otherPath.Length) return false; // 补充长度校验
+
+            for (int i = 0; i < thisPath.Length; i++)
+                if (!thisPath[i].Equals(otherPath[i])) return false;
+            return true;
+        }
+        
+        public override bool Equals(object obj) => obj is DetectionContextPath other && Equals(other);
+
+        // 哈希不再包含 DetectionPath：AddPath 会原地修改它，
+        // 若计入哈希，键在 Dictionary 中会"失踪"。
+        // 哈希只需保证"相等者哈希相等"，路径内容比较交给 Equals。
+        public override int GetHashCode() => HashCode.Combine(Source, Slot);
+
+        public string GetPath()
+        {
+            if (DetectionPath == null) return string.Empty;
+            var pathStack = new Stack<Detection.Detection>(DetectionPath.ToArray());
+            var path = new StringBuilder();
+            while (pathStack.TryPop(out var item))
+                path.Append($"{item.GetType().Name}.");
+            return path.ToString();
+        }
+    }
+}
+===== FILE END: TaskFlow/Runtime/Context/DetectionContextPath.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 13/39 · TaskFlow/Runtime/Context/SignalContext.cs · C# · 84 行
+===== FILE START: TaskFlow/Runtime/Context/SignalContext.cs =====
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace TaskFlow
+{
+    public class SignalContext : IContext<SignalContextPath, Queue<Signal>>, IContextReader
+    {
+        // 修复：原字段未初始化，首次访问会 NRE
+        private readonly Dictionary<SignalContextPath, Queue<Signal>> _context = new ();
+        private readonly Dictionary<IPorter, KeyValuePair<SignalContextPath, Queue<Signal>>[]> _porterLookup = new ();
+
+        // ---------- IContext 实现 ----------
+        public bool TryGet(SignalContextPath path, out Queue<Signal> value)
+            => _context.TryGetValue(path, out value);
+
+        public Queue<Signal> GetOrCreate(SignalContextPath path)
+        {
+            if (!_context.TryGetValue(path, out var box))
+            {
+                _context[path] = box = new Queue<Signal>();
+                UpdatePorterLookup(path, box);
+            }
+            return box;
+        }
+
+        public void Set(SignalContextPath path, Queue<Signal> value)
+        {
+            Clear(path);
+            _context[path] = value;
+            UpdatePorterLookup(path, value);
+        }
+
+        public void Clear(SignalContextPath path)
+        {
+            if (_context.TryGetValue(path, out var queue))
+                queue.Clear();
+        }
+
+        public KeyValuePair<SignalContextPath, Queue<Signal>>[] GetItemsByPorter(IPorter source)
+            => _porterLookup[source];
+        
+        public bool TryReadValue(IContextPath path, string fieldName, out object value)
+        {
+            value = null;
+            if (path is not SignalContextPath p) return false;
+            if (!TryGet(p, out var queue) || queue == null || queue.Count == 0) return false;
+            value = queue.Dequeue();   // 读取即消费，沿用原语义；想改"观察"语义换 Peek()
+            return true;
+        }
+
+        // ---------- 类特有的便捷重载（内部统一走 IContext 方法）----------
+        private void UpdatePorterLookup(SignalContextPath path, Queue<Signal> newQueue)
+        {
+            var source = path.Source;
+            var originalQueue = _context[path];
+            
+            var queues = _porterLookup[source];
+            var list = new List<KeyValuePair<SignalContextPath, Queue<Signal>>>(queues);
+
+            foreach (var pair in list.ToList())
+            {
+                if(pair.Key.Equals((IContextPath)path) && pair.Value == originalQueue)
+                    list.Remove(pair);
+            }
+            list.Add(new KeyValuePair<SignalContextPath, Queue<Signal>>(path, newQueue));
+            
+            _porterLookup[source] = list.ToArray();
+        }
+        
+        public Queue<Signal> GetQueue<T>(IPorter source) where T : Signal
+            => GetOrCreate(new SignalContextPath(source, typeof(T)));
+
+        public void EnqueueSignal<T>(IPorter source, T signal) where T : Signal
+            => GetQueue<T>(source).Enqueue(signal);
+
+        public void SetQueue<T>(IPorter source, Queue<T> signalQueue) where T : Signal
+            => Set(new SignalContextPath(source, typeof(T)), new Queue<Signal>(signalQueue));
+
+        // 语义统一：与其他 SetQueue 一致，先清后写
+        public void SetQueue(IPorter source, Type signalType, Queue<Signal> signalQueue)
+            => Set(new SignalContextPath(source, signalType), signalQueue);
+    }
+}
+===== FILE END: TaskFlow/Runtime/Context/SignalContext.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 14/39 · TaskFlow/Runtime/Context/SignalContextPath.cs · C# · 30 行
+===== FILE START: TaskFlow/Runtime/Context/SignalContextPath.cs =====
+using System;
+
+namespace TaskFlow
+{
+    public class SignalContextPath : IContextPath
+    {
+        public IPorter Source { get; }
+        public Type SignalType { get; }
+
+        public SignalContextPath(IPorter source, Type signalType)
+        {
+            Source = source;
+            SignalType = signalType;
+        }
+
+        public bool Equals(IContextPath other) => other is SignalContextPath p && Equals(p);
+
+        public bool Equals(SignalContextPath other) =>
+            other != null && other.Source.Equals(Source) && other.SignalType == SignalType;
+
+        public override bool Equals(object obj) => obj is SignalContextPath other && Equals(other);
+        
+        public override int GetHashCode() => HashCode.Combine(Source, SignalType);
+
+        // 合并自 DetectionContextPath.GetPath
+        public string GetPath() => $"{Source?.GetType().Name ?? "<null>"}.{SignalType.Name}";
+        
+    }
+
+}
+===== FILE END: TaskFlow/Runtime/Context/SignalContextPath.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 15/39 · TaskFlow/Runtime/Detection/AtomicDetection.cs · C# · 80 行
+===== FILE START: TaskFlow/Runtime/Detection/AtomicDetection.cs =====
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using JetBrains.Annotations;
+
+namespace TaskFlow.Detection
+{
+    public abstract class AtomicDetection : Detection
+    {
+        // 类型化引用：GetContext 没有 context 参数，仍依赖 Result 时留下的引用，
+        // 由传入的 context 用 as 同步（类型不匹配即为 null，天然清除残留状态）
+        protected DetectionContext DetectionContext;
+        protected SignalContext SignalContext;
+    
+        // 本次评估使用的读取器 = Result 传入的那个 Context
+        private IContextReader _reader;
+    
+        // 基类唯一抽象入口的唯一实现：子类只写 Evaluate
+        public sealed override bool Result(IContextReader context)
+        {
+            _reader = context ?? throw new ArgumentNullException(nameof(context));
+            DetectionContext = context as DetectionContext;   // 供 GetContext/CollectFieldPath 使用
+            SignalContext    = context as SignalContext;
+            return Evaluate();
+        }
+    
+        /// <summary>子类唯一需要实现的方法：通过 RoutePropertyValue 取值，与 Context 种类无关。</summary>
+        protected abstract bool Evaluate();
+    
+        // ---------- 统一路由 ----------
+    
+        protected object RoutePropertyValue(IDetectionField field)
+        {
+            switch (field)
+            {
+                case FieldPath fp:
+                    if (_reader != null && _reader.TryReadValue(fp.Path, fp.fieldName, out var value))
+                        return value;
+                    throw new KeyNotFoundException(
+                        $"[{GetType().Name}] 无法解析字段 '{fp.fieldName}'，" +
+                        $"路径 {fp.Path?.GetPath() ?? "<null>"} 不在当前 Context 中");
+    
+                case CustomField customField:
+                    return customField.Value;
+    
+                default:
+                    return string.Empty;
+            }
+        }
+    
+        protected static float ToFloat(object value) => value switch
+        {
+            float f  => f,
+            double d => (float)d,
+            int i    => i,
+            long l   => l,
+            _        => Convert.ToSingle(value)
+        };
+    
+        // ---------- GetContext 收集（不变，依赖上面同步的类型化字段） ----------
+    
+        protected void CollectFieldPath(IDetectionField field, List<KeyValuePair<DetectionContextPath, Signal>> pairs)
+        {
+            if (field is not FieldPath fp) return;
+    
+            Signal value = fp.Path switch
+            {
+                DetectionContextPath dcp =>
+                    DetectionContext != null && DetectionContext.TryGet(dcp, out var signal) ? signal : null,
+                SignalContextPath scp =>
+                    SignalContext != null && SignalContext.TryGet(scp, out var queue) && queue.Count > 0
+                        ? queue.Peek()
+                        : null,
+                _ => null
+            };
+    
+            pairs.Add(new KeyValuePair<DetectionContextPath, Signal>(new DetectionContextPath(this, fp), value));
+        }
+    }
+}
+===== FILE END: TaskFlow/Runtime/Detection/AtomicDetection.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 16/39 · TaskFlow/Runtime/Detection/BinaryFieldDetection.cs · C# · 48 行
+===== FILE START: TaskFlow/Runtime/Detection/BinaryFieldDetection.cs =====
+using System.Collections.Generic;
+
+namespace TaskFlow.Detection
+{
+    public abstract class BinaryFieldDetection : AtomicDetection
+    {
+        public IDetectionField Field0;
+        public IDetectionField Field1;
+
+        protected BinaryFieldDetection(IDetectionField field0, IDetectionField field1)
+        {
+            Field0 = field0;
+            Field1 = field1;
+        }
+
+        public override DetectionContext GetContext()
+        {
+            var pairs = new List<KeyValuePair<DetectionContextPath, Signal>>();
+            CollectFieldPath(Field0, pairs);
+            CollectFieldPath(Field1, pairs);
+            return new DetectionContext(pairs);
+        }
+    }
+    
+    public class Equal : BinaryFieldDetection
+    {
+        public Equal(IDetectionField field0, IDetectionField field1) : base(field0, field1) { }
+
+        protected override bool Evaluate()
+        {
+            var value0 = RoutePropertyValue(Field0);
+            var value1 = RoutePropertyValue(Field1);
+            return Equals(value0, value1);
+        }
+    }
+
+    public class NotEqual : BinaryFieldDetection
+    {
+        public NotEqual(IDetectionField field0, IDetectionField field1) : base(field0, field1) { }
+
+        protected override bool Evaluate()
+        {
+            var value0 = RoutePropertyValue(Field0);
+            var value1 = RoutePropertyValue(Field1);
+            return !Equals(value0, value1);
+        }
+    }
+}
+===== FILE END: TaskFlow/Runtime/Detection/BinaryFieldDetection.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 17/39 · TaskFlow/Runtime/Detection/CollectionDetection.cs · C# · 46 行
+===== FILE START: TaskFlow/Runtime/Detection/CollectionDetection.cs =====
+using System.Collections.Generic;
+using System.Linq;
+
+namespace TaskFlow.Detection
+{
+    public abstract class CollectionDetection : AtomicDetection
+    {
+        public IDetectionField Field;
+        public object[] Collection;
+
+        protected CollectionDetection(IDetectionField field, object[] collection)
+        {
+            Field = field;
+            Collection = collection;
+        }
+
+        public override DetectionContext GetContext()
+        {
+            var pairs = new List<KeyValuePair<DetectionContextPath, Signal>>();
+            CollectFieldPath(Field, pairs);
+            return new DetectionContext(pairs);
+        }
+    }
+    
+    public class Contain : CollectionDetection
+    {
+        public Contain(IDetectionField field, object[] collection) : base(field, collection) { }
+
+        protected override bool Evaluate()
+        {
+            var value = RoutePropertyValue(Field);
+            return Collection.Contains(value);
+        }
+    }
+
+    public class NotContain : CollectionDetection
+    {
+        public NotContain(IDetectionField field, object[] collection) : base(field, collection) { }
+
+        protected override bool Evaluate()
+        {
+            var value = RoutePropertyValue(Field);
+            return !Collection.Contains(value);
+        }
+    }
+}
+===== FILE END: TaskFlow/Runtime/Detection/CollectionDetection.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 18/39 · TaskFlow/Runtime/Detection/CombinationDetection.cs · C# · 39 行
+===== FILE START: TaskFlow/Runtime/Detection/CombinationDetection.cs =====
+using System.Collections.Generic;
+using System.Linq;
+
+namespace TaskFlow.Detection
+{
+    public abstract class CombinationDetection : Detection
+    {
+        /// 序列化注入
+        public List<Detection> SubDetections = new ();
+
+        public override DetectionContext GetContext()
+        {
+            var contextList = new List<DetectionContext>();
+            foreach (var subDetection in SubDetections)
+                contextList.Add(subDetection.GetContext());
+            
+            return new DetectionContext(contextList.ToArray());
+        }
+    }
+
+    /// 组合判定：与运算
+    public class And : CombinationDetection
+    {
+        public override bool Result(IContextReader contextReader) => SubDetections.Any() && SubDetections.All(subDetection => subDetection.Result(contextReader));
+    }
+
+    /// 组合判定：或运算
+    public class Or : CombinationDetection
+    {
+        public override bool Result(IContextReader contextReader) => SubDetections.Any() && SubDetections.Any(subDetection => subDetection.Result(contextReader));
+    }
+    
+    /// 组合判定：非运算
+    public class Not : CombinationDetection
+    {
+        private Detection SubDetection => SubDetections.First();
+        public override bool Result(IContextReader contextReader) => SubDetection is not null && !SubDetection.Result(contextReader);
+    }
+}
+===== FILE END: TaskFlow/Runtime/Detection/CombinationDetection.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 19/39 · TaskFlow/Runtime/Detection/CompareDetection.cs · C# · 41 行
+===== FILE START: TaskFlow/Runtime/Detection/CompareDetection.cs =====
+namespace TaskFlow.Detection
+{
+    public abstract class CompareDetection : BinaryFieldDetection
+    {
+        public bool IsEqualMode;
+        public float Tolerance;
+
+        protected CompareDetection(IDetectionField field0, IDetectionField field1, bool isEqualMode, float tolerance)
+            : base(field0, field1)
+        {
+            IsEqualMode = isEqualMode;
+            Tolerance = tolerance;
+        }
+    }
+    
+    public class LessThan : CompareDetection
+    {
+        public LessThan(IDetectionField field0, IDetectionField field1, bool isEqualMode, float tolerance)
+            : base(field0, field1, isEqualMode, tolerance) { }
+
+        protected override bool Evaluate()
+        {
+            var value0 = ToFloat(RoutePropertyValue(Field0));
+            var value1 = ToFloat(RoutePropertyValue(Field1));
+            return IsEqualMode ? value0 <= value1 + Tolerance : value0 < value1 - Tolerance;
+        }
+    }
+
+    public class GreaterThan : CompareDetection
+    {
+        public GreaterThan(IDetectionField field0, IDetectionField field1, bool isEqualMode, float tolerance)
+            : base(field0, field1, isEqualMode, tolerance) { }
+
+        protected override bool Evaluate()
+        {
+            var value0 = ToFloat(RoutePropertyValue(Field0));
+            var value1 = ToFloat(RoutePropertyValue(Field1));
+            return IsEqualMode ? value0 >= value1 - Tolerance : value0 > value1 + Tolerance;
+        }
+    }
+}
+===== FILE END: TaskFlow/Runtime/Detection/CompareDetection.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 20/39 · TaskFlow/Runtime/Detection/Detection.cs · C# · 16 行
+===== FILE START: TaskFlow/Runtime/Detection/Detection.cs =====
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace TaskFlow.Detection
+{
+    [Serializable]
+    public abstract class Detection
+    {   
+        [SerializeField] public int detectionId = 0;
+        
+        public abstract bool Result(IContextReader contextReader);
+
+        public abstract DetectionContext GetContext();
+    }
+}
+===== FILE END: TaskFlow/Runtime/Detection/Detection.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 21/39 · TaskFlow/Runtime/extends/BodyDetector.cs · C# · 40 行
+===== FILE START: TaskFlow/Runtime/extends/BodyDetector.cs =====
+using TaskFlow.Detection;
+using UnityEngine;
+
+namespace TaskFlow
+{
+    [CreateAssetMenu(fileName = "Body Detector", menuName = "TaskFlow/Body Detector")]
+    public sealed class BodyDetector : Detector
+    {
+        /// 在判定前接收
+        private DetectionContext LocalContext { get; set; } = new();
+        
+        public override void Inject<T>(T context)
+        {
+            if (context is not DetectionContext detectionContext)
+            {
+                Debug.LogError($"context is not a {nameof(DetectionContext)}");
+                return;
+            }
+
+            LocalContext = detectionContext.CloneSelf();
+        }
+
+        /// Called by the Previous
+        public override void Handle()
+        {
+            if (!RootDetection.Result(LocalContext)) return;
+            var newContextPairs = RootDetection.GetContext();
+            // 判定后发送给Receivers
+            foreach (var receiver in _receivers)
+            {
+                if(!receiver.SelfActive) continue;
+                // 注入上下文
+                receiver.Inject(newContextPairs);
+                // 唤醒处理
+                receiver.Handle();
+            }
+            Called = false;
+        }
+    }
+}
+===== FILE END: TaskFlow/Runtime/extends/BodyDetector.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 22/39 · TaskFlow/Runtime/extends/Channel.cs · C# · 47 行
+===== FILE START: TaskFlow/Runtime/extends/Channel.cs =====
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using TaskFlow.Utility;
+using UnityEngine;
+
+namespace TaskFlow
+{
+    [CreateAssetMenu(fileName = "new Channel", menuName = "TaskFlow/Channel")]
+    public class Channel<T> : BaseChannel where T : Signal
+    {
+        public override Type SignalType { get; } =  typeof(T);
+        [SerializeField, InspectorReadOnly] public string signalType = typeof(T).Name.SplitCamelCase();
+        
+        private static Channel<T> _instance;
+        public static Channel<T> Instance
+        {
+            get
+            {
+                _instance ??= ChannelManager.Instance.GetChannelByTypeOfSignal<T>();
+                if(_instance == null)
+                {
+                    var load = Resources.Load<Channel<T>>(ResourcePath);
+                    _instance = load != null ? load : CreateInstance<Channel<T>>(); 
+                    ChannelManager.Instance.AddChannel(_instance);
+                }
+                return _instance;
+            }
+            protected set => _instance = value;
+        }
+        
+        private readonly Queue<T> _eventQueue = new ();
+        
+        public override void LateUpdate()
+        {
+            if (!_eventQueue.Any()) return;
+            // 更新公共上下文
+            ChannelManager.Instance.RefreshSignalQueue(_eventQueue);
+            _eventQueue.Clear();
+            // 唤醒每个判别器工作
+            OnSignal?.Invoke();
+        }
+
+        public void AddMessage(T signal) => _eventQueue.Enqueue(signal);
+    }
+}
+===== FILE END: TaskFlow/Runtime/extends/Channel.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 23/39 · TaskFlow/Runtime/extends/HeadDetector.cs · C# · 45 行
+===== FILE START: TaskFlow/Runtime/extends/HeadDetector.cs =====
+using System.Collections.Generic;
+using System.Linq;
+using TaskFlow.Detection;
+using UnityEngine;
+
+namespace TaskFlow
+{
+    [CreateAssetMenu(fileName = "New Head Detector", menuName = "TaskFlow/Head Detector")]
+    public sealed class HeadDetector : Detector
+    {
+        /// 在判定前接收
+        private SignalContext LocalContext { get; set; } = new();
+        
+        public override void Inject<T>(T context)
+        {
+            if(context is not SignalContext signalContext)
+            {
+                Debug.LogError($"context is not a {nameof(SignalContext)}");
+                return;
+            }
+            foreach (var pair in _porters.Select(signalContext.GetItemsByPorter).SelectMany(selected => selected))
+            {
+                var queue = new Queue<Signal>(pair.Value);
+                LocalContext.SetQueue(pair.Key.Source, pair.Key.SignalType, queue);
+            }
+        }
+        
+        /// Called After 'ScriptRunBehaviourLateUpdate'
+        public override void Handle()
+        {
+            if (!RootDetection.Result(LocalContext)) return;
+            var newContextPairs = RootDetection.GetContext();
+            // 判定后发送给Receivers
+            foreach (var receiver in _receivers)
+            {
+                if(!receiver.SelfActive) continue;
+                // 注入上下文
+                receiver.Inject(newContextPairs);
+                // 唤醒处理
+                receiver.Handle();
+            }
+            Called = false;
+        }
+    }
+}
+===== FILE END: TaskFlow/Runtime/extends/HeadDetector.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 24/39 · TaskFlow/Runtime/interfaces/IContext.cs · C# · 27 行
+===== FILE START: TaskFlow/Runtime/interfaces/IContext.cs =====
+using System.Collections.Generic;
+
+namespace TaskFlow
+{
+    /// <summary>
+    /// 统一 Context 接口：以 IContextPath 派生类型为键的存取容器。
+    /// SignalContext    : IContext&lt;SignalContextPath, Queue&lt;Signal&gt;&gt;
+    /// DetectionContext : IContext&lt;DetectionContextPath, Signal&gt;
+    /// </summary>
+    public interface IContext<TKey, TValue> where TKey : IContextPath
+    {
+        /// <summary>尝试读取，不存在返回 false</summary>
+        bool TryGet(TKey path, out TValue value);
+
+        /// <summary>读取，不存在时创建并返回默认值（原 GetQueue 的语义）</summary>
+        TValue GetOrCreate(TKey path);
+
+        /// <summary>写入/替换条目（统一"先清后写"）</summary>
+        void Set(TKey path, TValue value);
+
+        /// <summary>清空条目（SignalContext 清队列内容；DetectionContext 移除键值对）</summary>
+        void Clear(TKey path);
+
+        /// <summary>取属于某个 Porter 的全部条目（原 GetContextItemsByPorter，两个 Context 共用）</summary>
+        KeyValuePair<TKey, TValue>[] GetItemsByPorter(IPorter source);
+    }
+}
+===== FILE END: TaskFlow/Runtime/interfaces/IContext.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 25/39 · TaskFlow/Runtime/interfaces/IContextPath.cs · C# · 19 行
+===== FILE START: TaskFlow/Runtime/interfaces/IContextPath.cs =====
+using System;
+using System.Collections.Generic;
+
+namespace TaskFlow
+{
+    /// <summary>
+    /// 统一路径接口：SignalContextPath / DetectionContextPath 的公共契约。
+    /// </summary>
+    public interface IContextPath : IEquatable<IContextPath>
+    {
+        /// <summary>条目来源 Porter（DetectionContextPath 的全局路径允许为 null）</summary>
+        IPorter Source { get; }
+
+        /// <summary>路径的可读表示，用于调试/日志（原 DetectionContextPath 独有，提升为公共契约）</summary>
+        string GetPath();
+    }
+
+    
+}
+===== FILE END: TaskFlow/Runtime/interfaces/IContextPath.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 26/39 · TaskFlow/Runtime/interfaces/IContextReader.cs · C# · 12 行
+===== FILE START: TaskFlow/Runtime/interfaces/IContextReader.cs =====
+namespace TaskFlow
+{
+    /// <summary>
+    /// 统一的"按路径读值"契约：DetectionContext / SignalContext 各自实现，
+    /// 取值差异（GetField / Dequeue）封装在 Context 内部，Detection 侧不再感知。
+    /// </summary>
+    public interface IContextReader
+    {
+        /// <summary>尝试读取。路径种类不匹配或条目缺失返回 false；读取本身无副作用。</summary>
+        bool TryReadValue(IContextPath path, string fieldName, out object value);
+    }
+}
+===== FILE END: TaskFlow/Runtime/interfaces/IContextReader.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 27/39 · TaskFlow/Runtime/interfaces/IDetectionField.cs · C# · 68 行
+===== FILE START: TaskFlow/Runtime/interfaces/IDetectionField.cs =====
+using System;
+using JetBrains.Annotations;
+using TaskFlow.Detection;
+
+namespace TaskFlow
+{
+    public interface IDetectionField { }
+
+    [Serializable]
+    public struct CustomField : IDetectionField
+    {
+        public CustomField(object value) { Value = value; }
+        public readonly object Value;
+    }
+    
+    [Serializable]
+    public class FieldPath : IDetectionField, IEquatable<FieldPath>
+    {
+        public enum PathType { DetectionContextPath, SignalContextPath }
+
+        public string fieldName;
+
+        // 统一后的唯一路径：运行时类型即判别器（取代 pathType + 两个可能互相矛盾的路径字段）
+        public IContextPath Path;
+
+        // 兼容读取：不再是可写状态（外部误赋值会编译报错，这正是要暴露的）
+        public PathType pathType => Path switch
+        {
+            DetectionContextPath => PathType.DetectionContextPath,
+            SignalContextPath    => PathType.SignalContextPath,
+            _ => throw new InvalidOperationException("FieldPath 未设置路径")
+        };
+
+        public FieldPath(IPorter source, AtomicDetection detection, FieldPath slot, string fieldName)
+            : this(new DetectionContextPath(source, detection, slot), fieldName) { }
+
+        public FieldPath(DetectionContextPath path, string fieldName)
+        {
+            Path = path;
+            this.fieldName = fieldName;
+        }
+
+        public FieldPath(SignalContextPath path, string fieldName)
+        {
+            Path = path;
+            this.fieldName = fieldName;
+        }
+
+        public FieldPath(IPorter source, Type signalType, string fieldName)
+            : this(new SignalContextPath(source, signalType), fieldName) { }
+
+        public bool Equals([CanBeNull] FieldPath other)
+        {
+            if (other is null) return false;
+            if (!string.Equals(fieldName, other.fieldName)) return false;
+            return Path switch
+            {
+                null => other.Path is null,
+                DetectionContextPath d => other.Path is DetectionContextPath od && d.Equals(od),
+                SignalContextPath s    => other.Path is SignalContextPath os && s.Equals(os),
+                _ => Path.Equals(other.Path)
+            };
+        }
+
+        public override bool Equals(object obj) => obj is FieldPath other && Equals(other);
+        public override int GetHashCode() => HashCode.Combine(fieldName, Path);
+    }
+}
+===== FILE END: TaskFlow/Runtime/interfaces/IDetectionField.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 28/39 · TaskFlow/Runtime/interfaces/IHandler.cs · C# · 4 行
+===== FILE START: TaskFlow/Runtime/interfaces/IHandler.cs =====
+namespace TaskFlow
+{
+    public interface IHandler : IReceiver { }
+}
+===== FILE END: TaskFlow/Runtime/interfaces/IHandler.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 29/39 · TaskFlow/Runtime/interfaces/IPorter.cs · C# · 13 行
+===== FILE START: TaskFlow/Runtime/interfaces/IPorter.cs =====
+using UnityEngine.Events;
+
+namespace TaskFlow
+{
+    public interface IPorter
+    {
+        public UnityAction OnSignal {get; set;}
+    }
+
+    
+    
+    
+}
+===== FILE END: TaskFlow/Runtime/interfaces/IPorter.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 30/39 · TaskFlow/Runtime/interfaces/IReceiver.cs · C# · 15 行
+===== FILE START: TaskFlow/Runtime/interfaces/IReceiver.cs =====
+using TaskFlow.Detection;
+
+namespace TaskFlow
+{
+    public interface IReceiver
+    {
+        bool SelfActive { get; }
+        void Inject<T>(T context) where T : IContextReader;
+        void Handle();
+#if UNITY_EDITOR
+        void AddSubscriber(IPorter porter);
+        void RemoveSubscriber(IPorter porter);
+#endif
+    }
+}
+===== FILE END: TaskFlow/Runtime/interfaces/IReceiver.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 31/39 · TaskFlow/Runtime/Manager/ChannelManager.cs · C# · 110 行
+===== FILE START: TaskFlow/Runtime/Manager/ChannelManager.cs =====
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
+using UnityEngine;
+
+namespace TaskFlow
+{
+    public class ChannelManager : MonoSingleton<ChannelManager>
+    {
+        [SerializeField] private BaseChannel[] channels;
+        
+        /// <summary>
+        /// - Key : Signal Type <br/>
+        /// - Value : Channel&lt;T&gt;
+        /// </summary>
+        private Dictionary<Type, BaseChannel> channelLookup = new ();
+        
+        public SignalContext ChannelContext { get; private set; } = new();
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            var so = Resources.LoadAll<BaseChannel>(BaseChannel.ResourcePath);
+            
+            channelLookup.Clear();
+            foreach (var channel in so)
+                channelLookup.Add(channel.SignalType, channel);
+            
+            var channelList = channelLookup.Select(item => item.Value).ToList();
+            channels = channelList.ToArray();
+        }
+#endif
+        
+        protected override void Awake()
+        {
+            base.Awake();
+            var so = Resources.LoadAll<BaseChannel>(BaseChannel.ResourcePath);
+            channelLookup.Clear();
+            foreach (var channel in so)
+                channelLookup.Add(channel.SignalType, channel);
+            
+            var channelList = channelLookup.Select(item => item.Value).ToList();
+            channels = channelList.ToArray();
+        }
+
+        void LateUpdate()
+        {
+            foreach (var channel in channels)
+            {
+                channel.LateUpdate();
+            }
+        }
+        
+        public void AddChannel(BaseChannel channel)
+        {
+            if(channels.Length != channelLookup.Count) InitLookup();
+            
+            if(channelLookup.ContainsKey(channel.SignalType)) return;
+            
+            if(channelLookup.TryAdd(channel.SignalType, channel))
+            {
+                var list = new List<BaseChannel>(channels) { channel };
+                channels =  list.ToArray();
+            }
+        }
+        
+        private void InitLookup()
+        {
+            var channelList = channelLookup.Select(item => item.Value).ToList();
+            channels = channelList.ToArray();
+        }
+
+        public bool TryGetChannelByTypeOfSignal<T>(out Channel<T> foundedChannel) where T : Signal
+        {
+            if(channels.Length != channelLookup.Count) InitLookup();
+            
+            foundedChannel = null;
+            if (channelLookup.TryGetValue(typeof(T), out var result))
+            {
+                foundedChannel = result as Channel<T>;
+                return true;
+            }
+            else
+                Debug.Log($"No channel found for {typeof(T)}");
+            
+            return false;
+        }
+
+        public Channel<T> GetChannelByTypeOfSignal<T>() where T : Signal
+        {
+            if(channels.Length != channelLookup.Count) InitLookup();
+            
+            if (channelLookup.TryGetValue(typeof(T), out var result))
+                return result as Channel<T>;
+            else
+                Debug.Log($"No channel found for {typeof(T)}");
+            
+            return null;
+        }
+
+        // ReSharper disable Unity.PerformanceAnalysis
+        public void RefreshSignalQueue<T>(Queue<T> newQueue) where T : Signal
+        {
+            var porter = GetChannelByTypeOfSignal<T>();
+            ChannelContext.SetQueue(porter, newQueue);
+        }
+    }
+}
+===== FILE END: TaskFlow/Runtime/Manager/ChannelManager.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 32/39 · TaskFlow/Runtime/Manager/DetectorManager.cs · C# · 60 行
+===== FILE START: TaskFlow/Runtime/Manager/DetectorManager.cs =====
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.LowLevel;
+using UnityEngine.PlayerLoop;
+
+namespace TaskFlow
+{
+    public class DetectorManager : MonoSingleton<DetectorManager>
+    {
+        private HeadDetector[] headDetectors;
+        public UnityAction OnDetectEnd;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            headDetectors =  Resources.LoadAll<HeadDetector>(Detector.ResourcePath)
+                .Where(d => d.Valid)
+                .Distinct()                                    // 去重且保持加载顺序
+                .OrderBy(d => d.name, StringComparer.Ordinal)  // 显式钉死顺序
+                .ToArray();
+        }
+
+        private void DetectAll()
+        {
+            // Debug.Log($"Starting detector loop, count: {detectors.Count}");
+            foreach (var detector in headDetectors)
+            {
+                if(detector.SelfActive && detector.Called)
+                {
+                    detector.Inject(ChannelManager.Instance.ChannelContext);
+                    detector.Handle();
+                }
+            }
+            OnDetectEnd?.Invoke();
+        }
+
+        [RuntimeInitializeOnLoadMethod]
+        private static void InitDetectorLoop()
+        {
+            var current = PlayerLoop.GetCurrentPlayerLoop();
+    
+            // 先移除已存在的相同类型的 System
+            current = current.RemoveSystem<DetectUpdate>();
+    
+            var detectUpdate = new PlayerLoopSystem
+            {
+                type = typeof(DetectUpdate),
+                updateDelegate = Instance.DetectAll
+            };
+    
+            current = current.InsertSystemAfter<PreLateUpdate.ScriptRunBehaviourLateUpdate>(detectUpdate);
+            PlayerLoop.SetPlayerLoop(current);
+        }
+        
+        private class DetectUpdate { }
+    }
+}
+===== FILE END: TaskFlow/Runtime/Manager/DetectorManager.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 33/39 · TaskFlow/Runtime/Manager/MonoSingleton.cs · C# · 43 行
+===== FILE START: TaskFlow/Runtime/Manager/MonoSingleton.cs =====
+using UnityEngine;
+
+namespace TaskFlow
+{
+    public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
+    {
+        private static T _instance;
+        public static T Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    // 在场景中查找
+                    _instance = FindFirstObjectByType<T>();
+                
+                    // 如果还没找到，创建一个新的 GameObject
+                    if (_instance == null)
+                    {
+                        GameObject go = new GameObject(typeof(T).Name);
+                        _instance = go.AddComponent<T>();
+                        DontDestroyOnLoad(_instance.gameObject);
+                    }
+                }
+                return _instance;
+            }
+        }
+
+        protected virtual void Awake()
+        {
+            if (_instance == null)
+            {
+                _instance = this as T;
+                DontDestroyOnLoad(gameObject);
+            }
+            else if (_instance != this)
+            {
+                Destroy(gameObject);
+            }
+        }
+    }
+
+}
+===== FILE END: TaskFlow/Runtime/Manager/MonoSingleton.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 34/39 · TaskFlow/Runtime/Manager/PlayerLoopSystemExtensions.cs · C# · 162 行
+===== FILE START: TaskFlow/Runtime/Manager/PlayerLoopSystemExtensions.cs =====
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.LowLevel;
+
+namespace TaskFlow
+{
+    public static class PlayerLoopSystemExtensions
+    {
+        public static void PrintEvents(this PlayerLoopSystem system)
+        {
+            foreach (var header in system.subSystemList)
+            {
+                Debug.LogFormat("------{0}------", header.type.Name);
+                foreach (var subSystem in header.subSystemList)
+                {
+                    Debug.LogFormat("{0}.{1}", header.type.Name, subSystem.type.Name);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 从 PlayerLoop 中移除指定类型的 System
+        /// </summary>
+        public static PlayerLoopSystem RemoveSystem<T>(this PlayerLoopSystem system)
+        {
+            return RemoveSystemInternal(system, typeof(T));
+        }
+    
+        private static PlayerLoopSystem RemoveSystemInternal(PlayerLoopSystem system, System.Type targetType)
+        {
+            // 如果当前节点本身就是要移除的类型
+            if (system.type == targetType)
+            {
+                // 返回一个空的 PlayerLoopSystem，表示移除该节点
+                return default;
+            }
+        
+            // 如果有子节点，递归处理
+            if (system.subSystemList != null && system.subSystemList.Length > 0)
+            {
+                var newSubSystems = new List<PlayerLoopSystem>();
+            
+                foreach (var subSystem in system.subSystemList)
+                {
+                    // 递归处理每个子节点
+                    var processedSubSystem = RemoveSystemInternal(subSystem, targetType);
+                
+                    // 如果返回的不是 default，说明该子节点没有被移除，需要保留
+                    // 注意：需要检查 processedSubSystem.type != null，因为 default 的 type 是 null
+                    if (processedSubSystem.type != null || processedSubSystem.subSystemList != null)
+                    {
+                        newSubSystems.Add(processedSubSystem);
+                    }
+                    // 如果 processedSubSystem 是 default，说明被移除了，直接跳过不添加
+                }
+            
+                // 创建新的 PlayerLoopSystem，保留原有信息，只更新 subSystemList
+                var newSystem = system;
+                newSystem.subSystemList = newSubSystems.ToArray();
+                return newSystem;
+            }
+        
+            // 没有子节点，且当前节点不是目标类型，保持不变
+            return system;
+        }
+        
+        /// <summary>
+        /// 在找到类型 T 的节点后方，作为兄弟节点插入
+        /// </summary>
+        public static PlayerLoopSystem InsertSystemAfter<T>(this PlayerLoopSystem root, PlayerLoopSystem system)
+        {
+            TryInsertAfter(root, out var newRoot);
+            return newRoot;
+
+            bool TryInsertAfter(PlayerLoopSystem current, out PlayerLoopSystem result)
+            {
+                result = current;
+                if (current.subSystemList == null || current.subSystemList.Length == 0)
+                    return false;
+
+                for (int i = 0; i < current.subSystemList.Length; i++)
+                {
+                    var sub = current.subSystemList[i];
+
+                    // 情况1：找到目标节点，在其后方作为兄弟节点插入
+                    if (sub.type == typeof(T))
+                    {
+                        var list = current.subSystemList.ToList();
+                        list.Insert(i + 1, system);
+                        current.subSystemList = list.ToArray(); // 修改当前层级的数组
+                        result = current;
+                        return true;
+                    }
+
+                    // 情况2：未找到，向下递归查找
+                    if (TryInsertAfter(sub, out var updatedSub))
+                    {
+                        // 修复副作用：先复制整个数组，再修改副本，最后赋值给当前节点
+                        var newList = current.subSystemList.ToArray();
+                        newList[i] = updatedSub;
+                        current.subSystemList = newList;
+
+                        result = current;
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 在找到类型 T 的节点的子列表最后插入
+        /// </summary>
+        public static PlayerLoopSystem InsertSystemEndOf<T>(this PlayerLoopSystem root, PlayerLoopSystem system)
+        {
+            TryInsertEndOf(root, out var newRoot);
+            return newRoot;
+
+            bool TryInsertEndOf(PlayerLoopSystem current, out PlayerLoopSystem result)
+            {
+                result = current;
+                if (current.subSystemList == null || current.subSystemList.Length == 0)
+                    return false;
+
+                for (int i = 0; i < current.subSystemList.Length; i++)
+                {
+                    var sub = current.subSystemList[i];
+
+                    // 情况1：找到目标节点，插入到其子列表末尾
+                    if (sub.type == typeof(T))
+                    {
+                        var list = sub.subSystemList?.ToList() ?? new List<PlayerLoopSystem>();
+                        list.Add(system);
+                        sub.subSystemList = list.ToArray(); // 修改副本的子列表
+
+                        // 修复副作用：先复制当前层数组，再替换目标节点
+                        var newList = current.subSystemList.ToArray();
+                        newList[i] = sub;
+                        current.subSystemList = newList;
+
+                        result = current;
+                        return true;
+                    }
+
+                    // 情况2：未找到，向下递归查找
+                    if (TryInsertEndOf(sub, out var updatedSub))
+                    {
+                        // 修复副作用：先复制数组，再替换
+                        var newList = current.subSystemList.ToArray();
+                        newList[i] = updatedSub;
+                        current.subSystemList = newList;
+
+                        result = current;
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+    }
+}
+===== FILE END: TaskFlow/Runtime/Manager/PlayerLoopSystemExtensions.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 35/39 · TaskFlow/Runtime/Utility/MemberGetter.cs · C# · 122 行
+===== FILE START: TaskFlow/Runtime/Utility/MemberGetter.cs =====
+using System;
+using System.Collections.Concurrent;
+using System.Linq.Expressions;
+using System.Reflection;
+using UnityEngine;
+
+namespace TaskFlow.Utility
+{
+    /// <summary>
+    /// 信号字段反射缓存（强类型 / 线程安全版）。
+    /// 对外仅一个泛型入口；内部：元数据查找 → 委托编译与调用。
+    /// 所有字典为 ConcurrentDictionary，可被多线程同时访问。
+    /// </summary>
+    public sealed class MemberGetter
+    {
+        // ── 缓存层 ──────────────────────────────────────────
+        // 元数据：(Type, name) -> FieldInfo，值为 null 表示"确认不存在"（负缓存）
+        private readonly ConcurrentDictionary<(Type, string), FieldInfo> _lookup = new();
+
+        // 委托：(FieldInfo, T的类型) -> 编译好的委托；值为 null 表示"已知类型不兼容"
+        private readonly ConcurrentDictionary<(FieldInfo, Type), Delegate> _getters = new();
+        
+        /// 弱类型取值。无法确定字段类型时使用，值类型字段会装箱一次。
+        public bool TryGetValue(object target, string name, out object value)
+        {
+            return TryGetValue<object>(target, name, out value);
+        }
+        
+        /// 直取弱类型值。字段不存在或不可读时返回 null。
+        public object GetValue(object target, string name)
+        {
+            // null 目标直接短路，避免 NRE 蔓延
+            if (target == null) return null;
+
+            var info = FindInfo(target.GetType(), name);
+            if (info == null) return null; // 字段不存在（错误已由 FindInfo 报过一次）
+
+            var getter = GetOrCreateGetter<object>(info);
+            if (getter == null) return null; // 类型不兼容（错误已由 TryCompileGetter 报过一次）
+
+            return getter(target);
+        }
+        
+        /// 强类型取值。零装箱（字段类型与 T 一致时），线程安全。
+        public bool TryGetValue<T>(object target, string name, out T value)
+        {
+            value = default;
+
+            // null 目标防护，避免 NRE 蔓延到调用方
+            if (target == null) return false;
+
+            var info = FindInfo(target.GetType(), name);
+            if (info == null) return false;
+
+            var getter = GetOrCreateGetter<T>(info);
+            if (getter == null) return false;
+
+            value = getter(target);
+            return true;
+        }
+
+        // ── 私有辅助链 ──────────────────────────────────────
+        /// <summary>查找 FieldInfo，正/负双缓存，错误只报一次</summary>
+        private FieldInfo FindInfo(Type type, string name)
+        {
+            return _lookup.GetOrAdd((type, name), static (key, args) =>
+            {
+                var found = args.type.GetField(args.name,
+                    BindingFlags.Instance | BindingFlags.Public);
+
+                if (found == null)
+                    Debug.LogError($"{args.type.Name}'s field '{args.name}' not found!");
+
+                return found;   // 未找到也写入（null）→ 负缓存生效
+            }, (type, name));
+        }
+
+        /// <summary>获取或编译该字段的强类型委托；编译失败也只发生一次</summary>
+        private Func<object, T> GetOrCreateGetter<T>(FieldInfo info)
+        {
+            var key = (info, typeof(T));
+
+            if (_getters.TryGetValue(key, out var cached))
+                return (Func<object, T>)cached;     // cached 为 null 时返回 null，
+                                                    // 由上层按失败处理，不再重复报错
+
+            // 先在锁外编译，再原子写入 —— 避免工厂闭包分配，
+            // 竞争时最多多编译几次，结果幂等，无害
+            var compiled = TryCompileGetter<T>(info);
+            var stored = _getters.GetOrAdd(key, (Delegate)compiled);
+
+            return (Func<object, T>)stored;         // 可能被其他线程抢先写入，取共享值
+        }
+
+        /// <summary>构建表达式树并编译（每个 成员+T 组合全程最多几次）</summary>
+        private static Func<object, T> TryCompileGetter<T>(FieldInfo info)
+        {
+            var fieldType = info.FieldType;
+
+            // 缺陷修复：解包 Nullable<int?> 之类的包装后再做兼容性检查
+            var expectedT = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
+
+            if (!expectedT.IsAssignableFrom(fieldType))
+            {
+                Debug.LogError(
+                    $"Field '{info.DeclaringType.Name}.{info.Name}' is {fieldType.Name}, " +
+                    $"cannot read as {typeof(T).Name}!");
+                return null;
+            }
+
+            var objParam = Expression.Parameter(typeof(object), "o");
+            Expression access = Expression.Field(
+                Expression.Convert(objParam, info.DeclaringType), info);
+
+            // 字段类型与 T 完全一致时不插入任何转换（返回值零装箱路径）
+            if (access.Type != typeof(T))
+                access = Expression.Convert(access, typeof(T));   // 含引用收窄 或 int→int? 提升
+
+            return Expression.Lambda<Func<object, T>>(access, objParam).Compile();
+        }
+    }
+}
+===== FILE END: TaskFlow/Runtime/Utility/MemberGetter.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 36/39 · TaskFlow/Runtime/Utility/StringCamelReGexSplit.cs · C# · 14 行
+===== FILE START: TaskFlow/Runtime/Utility/StringCamelReGexSplit.cs =====
+using System.Text.RegularExpressions;
+
+namespace TaskFlow.Utility
+{
+    public static class StringCamelReGexSplit
+    {
+        private static readonly Regex CamelCaseRegex = new Regex(
+            @"(?<=[a-z])(?=[A-Z])|(?<!^)(?=[A-Z][a-z])",
+            RegexOptions.Compiled);
+
+        public static string SplitCamelCase(this string input) =>
+            string.IsNullOrEmpty(input) ? input : CamelCaseRegex.Replace(input, " ");
+    }
+}
+===== FILE END: TaskFlow/Runtime/Utility/StringCamelReGexSplit.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 37/39 · TaskFlow/Sample/SampleHandler.cs · C# · 30 行
+===== FILE START: TaskFlow/Sample/SampleHandler.cs =====
+using TaskFlow.Detection;
+using UnityEngine;
+
+namespace TaskFlow.Sample
+{
+    public class SampleHandler : MonoBehaviour, IHandler
+    {
+        public bool SelfActive { get; }
+
+        public void Inject<T>(T context) where T : IContextReader
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Handle()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void AddSubscriber(IPorter porter)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void RemoveSubscriber(IPorter porter)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+}
+===== FILE END: TaskFlow/Sample/SampleHandler.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 38/39 · TaskFlow/Sample/SampleSender.cs · C# · 13 行
+===== FILE START: TaskFlow/Sample/SampleSender.cs =====
+using UnityEngine;
+
+namespace TaskFlow.Sample
+{
+    public class SampleSender : MonoBehaviour
+    {
+        void Start()
+        {
+            var signal = new SampleSignal();
+            Sender.Send(signal);
+        }
+    }
+}
+===== FILE END: TaskFlow/Sample/SampleSender.cs =====
+
+──────────────────────────────────────────────────────────────────────
+ ▶ 文件 39/39 · TaskFlow/Sample/SampleSignal.cs · C# · 6 行
+===== FILE START: TaskFlow/Sample/SampleSignal.cs =====
+using TaskFlow;
+
+public class SampleSignal : Signal
+{
+    
+}
+===== FILE END: TaskFlow/Sample/SampleSignal.cs =====
+
+══════════════════════════════════════════════════════════════════════
+ END · 共 39 个文件 · 2,177 行 · 约 26,864 tokens
+──────────────────────────────────────────────────────────────────────
+由 proj2txt v1.0.0 生成于 2026-08-31 01:05 · 如需调整拼接范围请重新运行 proj2txt
+══════════════════════════════════════════════════════════════════════

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace TaskFlow
 {
@@ -8,7 +6,7 @@ namespace TaskFlow
     {
         public static void Send<T>(T signal) where T : Signal
         {
-            if (ChannelManager.TryGetChannelByTypeOfSignal<T>(out var channel))
+            if (ChannelManager.Instance.TryGetChannelByTypeOfSignal<T>(out var channel))
             {
                 if (channel != null) channel.AddMessage(signal);
             }

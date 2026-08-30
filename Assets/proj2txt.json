@@ -1,0 +1,23 @@
+{
+  "_说明": [
+    "proj2txt 配置文件。命令行参数优先级高于本文件；",
+    "不需要的键可直接删除（恢复默认）；exts 为空列表 [] 时使用内置默认扩展名。"
+  ],
+  "output": "project_bundle.txt",
+  "exts": [],
+  "any_text": false,
+  "exclude_dirs": [],
+  "exclude_files": [],
+  "exclude_patterns": [],
+  "include_patterns": [],
+  "line_numbers": false,
+  "max_file_lines": 0,
+  "max_file_kb": 512,
+  "max_total_kb": 0,
+  "split_tokens": 0,
+  "show_tree": true,
+  "show_index": true,
+  "ai_header": true,
+  "smart_order": true,
+  "clip": false
+}

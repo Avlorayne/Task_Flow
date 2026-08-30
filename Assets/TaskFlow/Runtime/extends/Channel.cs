@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using TaskFlow.Utility;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace TaskFlow
 {
     [CreateAssetMenu(fileName = "new Channel", menuName = "TaskFlow/Channel")]
     public class Channel<T> : BaseChannel where T : Signal
     {
+        public override Type SignalType { get; } =  typeof(T);
         [SerializeField, InspectorReadOnly] public string signalType = typeof(T).Name.SplitCamelCase();
         
         private static Channel<T> _instance;
@@ -18,41 +18,30 @@ namespace TaskFlow
         {
             get
             {
-                _instance ??= ChannelManager.GetChannelByTypeOfSignal<T>();
+                _instance ??= ChannelManager.Instance.GetChannelByTypeOfSignal<T>();
                 if(_instance == null)
                 {
-                    _instance = Resources.Load<Channel<T>>(ResourcePath);
-                    ChannelManager.AddChannel(_instance);
+                    var load = Resources.Load<Channel<T>>(ResourcePath);
+                    _instance = load != null ? load : CreateInstance<Channel<T>>(); 
+                    ChannelManager.Instance.AddChannel(_instance);
                 }
                 return _instance;
             }
             protected set => _instance = value;
         }
         
-        private readonly ConcurrentQueue<T> _eventQueue = new ();
+        private readonly Queue<T> _eventQueue = new ();
         
         public override void LateUpdate()
         {
-            bool currentEvents = _eventQueue.Any();
-            // 清理公共上下文
-            ChannelManager.RefreshSignalQueue(_eventQueue);
+            if (!_eventQueue.Any()) return;
+            // 更新公共上下文
+            ChannelManager.Instance.RefreshSignalQueue(_eventQueue);
+            _eventQueue.Clear();
             // 唤醒每个判别器工作
             OnSignal?.Invoke();
         }
 
         public void AddMessage(T signal) => _eventQueue.Enqueue(signal);
-        
-        public override int GetHashCode()
-        {
-            return typeof(Channel<T>).GetHashCode();
-            // 或者：return typeof(T).GetHashCode();
-        }
-        
-        public override bool Equals(object obj)
-        {
-            // 只有相同封闭泛型类型才算相等
-            return obj is Channel<T>;
-            // 严格一点可写成：return obj != null && obj.GetType() == GetType();
-        }
     }
 }
