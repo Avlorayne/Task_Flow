@@ -12,7 +12,7 @@ namespace TaskFlow
                 if (_instance == null)
                 {
                     // 在场景中查找
-                    _instance = FindObjectOfType<T>();
+                    _instance = FindFirstObjectByType<T>();
                 
                     // 如果还没找到，创建一个新的 GameObject
                     if (_instance == null)

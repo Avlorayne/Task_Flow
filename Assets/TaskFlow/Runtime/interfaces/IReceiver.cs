@@ -5,9 +5,11 @@ namespace TaskFlow
     public interface IReceiver
     {
         bool SelfActive { get; }
-        void Inject(DetectionContext context);
+        void Inject<T>(T context) where T : IContextReader;
         void Handle();
+#if UNITY_EDITOR
         void AddSubscriber(IPorter porter);
         void RemoveSubscriber(IPorter porter);
+#endif
     }
 }

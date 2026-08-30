@@ -112,8 +112,10 @@ namespace TaskFlow.Editor
 //   此文件由 TaskFlow 编辑器工具自动生成，请勿手工修改。
 //   来源信号类型：{signal.AssemblyQualifiedName}
 // </auto-generated>
-
 using UnityEngine;
+using TaskFlow;
+using Signal = TaskFlow.Signal;
+
 namespace {Namespace}
 {{
     /// <summary>{signal.Name} 对应的封闭泛型通道。</summary>

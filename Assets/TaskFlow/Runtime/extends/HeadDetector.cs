@@ -11,14 +11,19 @@ namespace TaskFlow
         /// 在判定前接收
         private SignalContext LocalContext { get; set; } = new();
         
-        public void Inject(SignalContext context)
+        public override void Inject<T>(T context)
         {
-            foreach (var pair in _porters.Select(context.GetContextItemsByPorter)
-                         .SelectMany(selected => selected))
-                LocalContext.SetQueue(pair.Key, (Queue<Signal>)pair.Value);
+            if(context is not SignalContext signalContext)
+            {
+                Debug.LogError($"context is not a {nameof(SignalContext)}");
+                return;
+            }
+            foreach (var pair in _porters.Select(signalContext.GetItemsByPorter).SelectMany(selected => selected))
+            {
+                var queue = new Queue<Signal>(pair.Value);
+                LocalContext.SetQueue(pair.Key.Source, pair.Key.SignalType, queue);
+            }
         }
-        
-        public override void Inject(DetectionContext context) { }
         
         /// Called After 'ScriptRunBehaviourLateUpdate'
         public override void Handle()
@@ -30,7 +35,7 @@ namespace TaskFlow
             {
                 if(!receiver.SelfActive) continue;
                 // 注入上下文
-                receiver.Inject(new DetectionContext(newContextPairs));
+                receiver.Inject(newContextPairs);
                 // 唤醒处理
                 receiver.Handle();
             }

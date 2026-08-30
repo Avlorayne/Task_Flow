@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,28 +10,27 @@ namespace TaskFlow
 {
     public class DetectorManager : MonoSingleton<DetectorManager>
     {
-        private static HashSet<HeadDetector> detectors = new();
-        public static UnityAction OnDetectEnd;
+        private HeadDetector[] headDetectors;
+        public UnityAction OnDetectEnd;
 
         protected override void Awake()
         {
             base.Awake();
-            detectors =  new HashSet<HeadDetector>(Resources.FindObjectsOfTypeAll<HeadDetector>().Where(d => d.Valid));
+            headDetectors =  Resources.LoadAll<HeadDetector>(Detector.ResourcePath)
+                .Where(d => d.Valid)
+                .Distinct()                                    // 去重且保持加载顺序
+                .OrderBy(d => d.name, StringComparer.Ordinal)  // 显式钉死顺序
+                .ToArray();
         }
 
-        public static void AddDetector(HeadDetector detector)
-        {
-            detectors.Add(detector);
-        }
-
-        private static void DetectAll()
+        private void DetectAll()
         {
             // Debug.Log($"Starting detector loop, count: {detectors.Count}");
-            foreach (var detector in detectors)
+            foreach (var detector in headDetectors)
             {
                 if(detector.SelfActive && detector.Called)
                 {
-                    detector.Inject(ChannelManager.ChannelContext);
+                    detector.Inject(ChannelManager.Instance.ChannelContext);
                     detector.Handle();
                 }
             }
@@ -40,20 +40,19 @@ namespace TaskFlow
         [RuntimeInitializeOnLoadMethod]
         private static void InitDetectorLoop()
         {
-            var detectUpdate = new PlayerLoopSystem()
+            var current = PlayerLoop.GetCurrentPlayerLoop();
+    
+            // 先移除已存在的相同类型的 System
+            current = current.RemoveSystem<DetectUpdate>();
+    
+            var detectUpdate = new PlayerLoopSystem
             {
                 type = typeof(DetectUpdate),
-                updateDelegate = DetectAll
+                updateDelegate = Instance.DetectAll
             };
-            
-            var current = PlayerLoop.GetCurrentPlayerLoop();
-            // Debug.Log($"=========================Original================================");
-            // current.PrintEvents();
-            // Debug.Log($"=========================Modified================================");
-            // 把这个分片加在 MonoBehaviour 脚本运行完 LateUpdate 之后
+    
             current = current.InsertSystemAfter<PreLateUpdate.ScriptRunBehaviourLateUpdate>(detectUpdate);
             PlayerLoop.SetPlayerLoop(current);
-            // current.PrintEvents();
         }
         
         private class DetectUpdate { }

@@ -18,6 +18,52 @@ namespace TaskFlow
                 }
             }
         }
+
+        /// <summary>
+        /// 从 PlayerLoop 中移除指定类型的 System
+        /// </summary>
+        public static PlayerLoopSystem RemoveSystem<T>(this PlayerLoopSystem system)
+        {
+            return RemoveSystemInternal(system, typeof(T));
+        }
+    
+        private static PlayerLoopSystem RemoveSystemInternal(PlayerLoopSystem system, System.Type targetType)
+        {
+            // 如果当前节点本身就是要移除的类型
+            if (system.type == targetType)
+            {
+                // 返回一个空的 PlayerLoopSystem，表示移除该节点
+                return default;
+            }
+        
+            // 如果有子节点，递归处理
+            if (system.subSystemList != null && system.subSystemList.Length > 0)
+            {
+                var newSubSystems = new List<PlayerLoopSystem>();
+            
+                foreach (var subSystem in system.subSystemList)
+                {
+                    // 递归处理每个子节点
+                    var processedSubSystem = RemoveSystemInternal(subSystem, targetType);
+                
+                    // 如果返回的不是 default，说明该子节点没有被移除，需要保留
+                    // 注意：需要检查 processedSubSystem.type != null，因为 default 的 type 是 null
+                    if (processedSubSystem.type != null || processedSubSystem.subSystemList != null)
+                    {
+                        newSubSystems.Add(processedSubSystem);
+                    }
+                    // 如果 processedSubSystem 是 default，说明被移除了，直接跳过不添加
+                }
+            
+                // 创建新的 PlayerLoopSystem，保留原有信息，只更新 subSystemList
+                var newSystem = system;
+                newSystem.subSystemList = newSubSystems.ToArray();
+                return newSystem;
+            }
+        
+            // 没有子节点，且当前节点不是目标类型，保持不变
+            return system;
+        }
         
         /// <summary>
         /// 在找到类型 T 的节点后方，作为兄弟节点插入

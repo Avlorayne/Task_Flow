@@ -1,3 +1,0 @@
-{
-  "Full context": {"channels":{"ChannelA":[{"type":"ModelSignalA","Text":"PlayMode-A","Id":"d4c88114f2e84dae8eae18fb276d3f5c","TimeStamp":5.57711124}],"ChannelB":[{"type":"ModelSignalB","Value":42,"Id":"b2760aa23fb04e32a931dcdb04d82200","TimeStamp":5.577418}],"ChannelC":[{"type":"ModelSignalC","Enabled":true,"Id":"c78fb10e2e1640be92d8888cbfcd070d","TimeStamp":5.577439}],"ChannelX":[{"type":"ModelSignalA","Text":"PlayMode-X","Id":"329deebc53f44cb7967feeb4d96532e7","TimeStamp":5.577442}]}}
-}

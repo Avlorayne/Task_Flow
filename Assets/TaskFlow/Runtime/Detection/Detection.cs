@@ -6,13 +6,11 @@ namespace TaskFlow.Detection
 {
     [Serializable]
     public abstract class Detection
-    {
+    {   
         [SerializeField] public int detectionId = 0;
-        protected DetectionContext DetectionContext;
-        protected SignalContext SignalContext;
-        public abstract bool Result(DetectionContext context);
-        public abstract bool Result(SignalContext context);
+        
+        public abstract bool Result(IContextReader contextReader);
 
-        public abstract KeyValuePair<DetectionContextPath, Signal>[] GetContext();
+        public abstract DetectionContext GetContext();
     }
 }

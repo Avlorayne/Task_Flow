@@ -6,10 +6,10 @@ namespace TaskFlow
 {
     public abstract class Signal
     {
-        public float TimeStamp = Time.time;
+        private readonly int timeStamp = Time.frameCount;
         
-        public static Func<Signal,Signal,Signal> GetEarlier = (s0, s1) => s0.TimeStamp < s1.TimeStamp ? s0 : s1;
-        public static Func<Signal,Signal,Signal> GetLater = (s0, s1) => s0.TimeStamp > s1.TimeStamp ? s1 : s0; 
+        public static Func<Signal,Signal,Signal> GetEarlier = (s0, s1) => s0.timeStamp < s1.timeStamp ? s0 : s1;
+        public static Func<Signal,Signal,Signal> GetLater = (s0, s1) => s0.timeStamp > s1.timeStamp ? s0 : s1; 
     }
 
     public static class SignalExtensions

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using TaskFlow.Detection;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -11,18 +9,27 @@ namespace TaskFlow
 {
     public class ChannelManager : MonoSingleton<ChannelManager>
     {
-        private static HashSet<BaseChannel> channels = new();
-        private static Dictionary<Type, BaseChannel> channelLookup = new ();
+        [SerializeField] private BaseChannel[] channels;
         
-        public static SignalContext ChannelContext { get; private set; } = new();
+        /// <summary>
+        /// - Key : Signal Type <br/>
+        /// - Value : Channel&lt;T&gt;
+        /// </summary>
+        private Dictionary<Type, BaseChannel> channelLookup = new ();
+        
+        public SignalContext ChannelContext { get; private set; } = new();
 
 #if UNITY_EDITOR
         private void OnValidate()
         {
             var so = Resources.LoadAll<BaseChannel>(BaseChannel.ResourcePath);
-            channels.Clear();
-            channels.AddRange(so);
             
+            channelLookup.Clear();
+            foreach (var channel in so)
+                channelLookup.Add(channel.SignalType, channel);
+            
+            var channelList = channelLookup.Select(item => item.Value).ToList();
+            channels = channelList.ToArray();
         }
 #endif
         
@@ -30,8 +37,12 @@ namespace TaskFlow
         {
             base.Awake();
             var so = Resources.LoadAll<BaseChannel>(BaseChannel.ResourcePath);
-            channels.Clear();
-            channels.AddRange(so);
+            channelLookup.Clear();
+            foreach (var channel in so)
+                channelLookup.Add(channel.SignalType, channel);
+            
+            var channelList = channelLookup.Select(item => item.Value).ToList();
+            channels = channelList.ToArray();
         }
 
         void LateUpdate()
@@ -42,39 +53,28 @@ namespace TaskFlow
             }
         }
         
-        public static void AddChannel(BaseChannel channel)
+        public void AddChannel(BaseChannel channel)
         {
-            channels.Add(channel);
+            if(channels.Length != channelLookup.Count) InitLookup();
+            
+            if(channelLookup.ContainsKey(channel.SignalType)) return;
+            
+            if(channelLookup.TryAdd(channel.SignalType, channel))
+            {
+                var list = new List<BaseChannel>(channels) { channel };
+                channels =  list.ToArray();
+            }
         }
         
-        private static void InitLookup()
+        private void InitLookup()
         {
-            // 可能是Lookup里面的内容不全
-            if (channels.Count > channelLookup.Count)
-            {
-                channelLookup.Clear();
-                foreach (var channel in channels)
-                    channelLookup.Add(channel.GetType(), channel);
-                // 还不一样？八成是Channel里面混了两个同Type的实例
-                if (channels.Count > channelLookup.Count)
-                {
-                    channels.Clear();
-                    var channelList = channelLookup.Select(item => item.Value).ToList();
-                    channels.AddRange(channelList);    
-                }
-            }
-            // 不知道是什么情况
-            else if (channels.Count < channelLookup.Count)
-            {
-                channels.Clear();
-                var channelList = channelLookup.Select(item => item.Value).ToList();
-                channels.AddRange(channelList);
-            }
+            var channelList = channelLookup.Select(item => item.Value).ToList();
+            channels = channelList.ToArray();
         }
 
-        public static bool TryGetChannelByTypeOfSignal<T>(out Channel<T> foundedChannel) where T : Signal
+        public bool TryGetChannelByTypeOfSignal<T>(out Channel<T> foundedChannel) where T : Signal
         {
-            if(channels.Count != channelLookup.Count) InitLookup();
+            if(channels.Length != channelLookup.Count) InitLookup();
             
             foundedChannel = null;
             if (channelLookup.TryGetValue(typeof(T), out var result))
@@ -88,9 +88,9 @@ namespace TaskFlow
             return false;
         }
 
-        public static Channel<T> GetChannelByTypeOfSignal<T>() where T : Signal
+        public Channel<T> GetChannelByTypeOfSignal<T>() where T : Signal
         {
-            if(channels.Count != channelLookup.Count) InitLookup();
+            if(channels.Length != channelLookup.Count) InitLookup();
             
             if (channelLookup.TryGetValue(typeof(T), out var result))
                 return result as Channel<T>;
@@ -101,7 +101,7 @@ namespace TaskFlow
         }
 
         // ReSharper disable Unity.PerformanceAnalysis
-        public static void RefreshSignalQueue<T>(ConcurrentQueue<T> newQueue) where T : Signal
+        public void RefreshSignalQueue<T>(Queue<T> newQueue) where T : Signal
         {
             var porter = GetChannelByTypeOfSignal<T>();
             ChannelContext.SetQueue(porter, newQueue);
